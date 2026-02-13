@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl:*)",
+      "Bash(python -c:*)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:gist.github.com)",
+      "WebFetch(domain:aleclownes.com)",
+      "Bash(del:*)",
+      "Bash(del \"c:\\\\Projects\\\\charlesvsworld\\\\nul\")"
+    ]
+  }
+}

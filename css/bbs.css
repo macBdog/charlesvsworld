@@ -1,0 +1,173 @@
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+:root {
+  /* DOS 16-color palette */
+  --black: #000000;
+  --dark-blue: #0000AA;
+  --dark-green: #00AA00;
+  --dark-cyan: #00AAAA;
+  --dark-red: #AA0000;
+  --dark-magenta: #AA00AA;
+  --dark-yellow: #AA5500;
+  --light-gray: #AAAAAA;
+  --dark-gray: #555555;
+  --blue: #5555FF;
+  --green: #55FF55;
+  --cyan: #55FFFF;
+  --red: #FF5555;
+  --magenta: #FF55FF;
+  --yellow: #FFFF55;
+  --white: #FFFFFF;
+}
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #0a0a12;
+}
+
+#crt {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(ellipse at center, #0a0a1e 0%, #020208 100%);
+}
+
+#screen {
+  position: relative;
+  width: 82ch;
+  max-width: 95vw;
+  height: 90vh;
+  max-height: 90vh;
+  padding: 1em 1ch;
+  background: #05050f;
+  border-radius: 12px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  font-family: 'VT323', 'Courier New', monospace;
+  font-size: clamp(12px, 1.8vw, 20px);
+  line-height: 1.2;
+  color: var(--light-gray);
+  box-shadow:
+    inset 0 0 80px rgba(85, 85, 255, 0.05),
+    inset 0 0 20px rgba(0, 0, 0, 0.8),
+    0 0 40px rgba(85, 85, 255, 0.08),
+    0 0 80px rgba(85, 85, 255, 0.04);
+  text-shadow: 0 0 3px currentColor;
+}
+
+#terminal {
+  white-space: pre;
+  word-break: break-all;
+  overflow: hidden;
+}
+
+#cursor {
+  display: inline;
+  color: var(--light-gray);
+  position: absolute;
+}
+
+#cursor.blink {
+  animation: blink-cursor 1s step-end infinite;
+}
+
+#cursor.hidden {
+  display: none;
+}
+
+@keyframes blink-cursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Scanline overlay */
+#scanlines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 2px,
+    rgba(0, 0, 0, 0.15) 2px,
+    rgba(0, 0, 0, 0.15) 4px
+  );
+  z-index: 10;
+}
+
+/* Subtle screen flicker */
+#crt::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  animation: flicker 0.15s infinite;
+  opacity: 0;
+  background: rgba(85, 85, 255, 0.02);
+  z-index: 11;
+}
+
+@keyframes flicker {
+  0%   { opacity: 0.02; }
+  5%   { opacity: 0; }
+  10%  { opacity: 0.01; }
+  95%  { opacity: 0; }
+  100% { opacity: 0.02; }
+}
+
+/* DOS color classes */
+.fg-black { color: var(--black); }
+.fg-dark-blue { color: var(--dark-blue); }
+.fg-dark-green { color: var(--dark-green); }
+.fg-dark-cyan { color: var(--dark-cyan); }
+.fg-dark-red { color: var(--dark-red); }
+.fg-dark-magenta { color: var(--dark-magenta); }
+.fg-dark-yellow { color: var(--dark-yellow); }
+.fg-light-gray { color: var(--light-gray); }
+.fg-dark-gray { color: var(--dark-gray); }
+.fg-blue { color: var(--blue); }
+.fg-green { color: var(--green); }
+.fg-cyan { color: var(--cyan); }
+.fg-red { color: var(--red); }
+.fg-magenta { color: var(--magenta); }
+.fg-yellow { color: var(--yellow); }
+.fg-white { color: var(--white); }
+
+/* Clickable menu items */
+.menu-item {
+  cursor: pointer;
+  display: inline;
+}
+
+.menu-item:hover {
+  background: var(--dark-blue);
+  color: var(--white);
+  text-shadow: 0 0 6px var(--blue);
+}
+
+/* Hide scrollbar but keep scrolling */
+#screen::-webkit-scrollbar { width: 0; }
+#screen { scrollbar-width: none; }
+
+/* Prevent text selection on terminal */
+#screen {
+  user-select: none;
+  -webkit-user-select: none;
+}

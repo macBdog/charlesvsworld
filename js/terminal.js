@@ -1,0 +1,185 @@
+// terminal.js — Character-by-character text rendering engine
+const Terminal = (() => {
+  const el = document.getElementById('terminal');
+  const cursorEl = document.getElementById('cursor');
+  let abortController = null;
+
+  function clear() {
+    cancelAnyTyping();
+    el.innerHTML = '';
+    updateCursorPosition();
+  }
+
+  function cancelAnyTyping() {
+    if (abortController) {
+      abortController.abort();
+      abortController = null;
+    }
+  }
+
+  // Write colored text instantly (no animation)
+  // segments: array of { text, color } or just a plain string
+  function writeLine(segments, addNewline = true) {
+    if (typeof segments === 'string') {
+      segments = [{ text: segments }];
+    }
+    for (const seg of segments) {
+      if (seg.color) {
+        const span = document.createElement('span');
+        span.className = 'fg-' + seg.color;
+        span.textContent = seg.text;
+        el.appendChild(span);
+      } else {
+        el.appendChild(document.createTextNode(seg.text));
+      }
+    }
+    if (addNewline) {
+      el.appendChild(document.createTextNode('\n'));
+    }
+    scrollToBottom();
+    updateCursorPosition();
+  }
+
+  function write(text) {
+    el.appendChild(document.createTextNode(text));
+    scrollToBottom();
+    updateCursorPosition();
+  }
+
+  // Type text character by character, returns a promise
+  // segments: string or array of { text, color }
+  function typeText(segments, speed = 30) {
+    if (typeof segments === 'string') {
+      segments = [{ text: segments }];
+    }
+    cancelAnyTyping();
+    abortController = new AbortController();
+    const signal = abortController.signal;
+
+    return new Promise((resolve) => {
+      let segIdx = 0;
+      let charIdx = 0;
+      let currentSpan = null;
+
+      function createSpanForSegment(seg) {
+        if (seg.color) {
+          const span = document.createElement('span');
+          span.className = 'fg-' + seg.color;
+          el.appendChild(span);
+          return span;
+        }
+        return null;
+      }
+
+      function tick() {
+        if (signal.aborted) { resolve(); return; }
+        if (segIdx >= segments.length) {
+          abortController = null;
+          resolve();
+          return;
+        }
+        const seg = segments[segIdx];
+        if (charIdx === 0) {
+          currentSpan = createSpanForSegment(seg);
+        }
+        const ch = seg.text[charIdx];
+        if (currentSpan) {
+          currentSpan.textContent += ch;
+        } else {
+          el.appendChild(document.createTextNode(ch));
+        }
+        charIdx++;
+        if (charIdx >= seg.text.length) {
+          segIdx++;
+          charIdx = 0;
+          currentSpan = null;
+        }
+        scrollToBottom();
+        updateCursorPosition();
+        setTimeout(tick, speed);
+      }
+      tick();
+    });
+  }
+
+  // Type a full line then add newline
+  function typeLine(segments, speed = 30) {
+    return typeText(segments, speed).then(() => {
+      el.appendChild(document.createTextNode('\n'));
+      scrollToBottom();
+      updateCursorPosition();
+    });
+  }
+
+  function scrollToBottom() {
+    const screen = document.getElementById('screen');
+    screen.scrollTop = screen.scrollHeight;
+  }
+
+  function updateCursorPosition() {
+    // Position cursor right after the last text content
+    const rect = el.getBoundingClientRect();
+    const screenRect = document.getElementById('screen').getBoundingClientRect();
+
+    // Get the range at end of content
+    const range = document.createRange();
+    if (el.childNodes.length > 0) {
+      const lastNode = el.childNodes[el.childNodes.length - 1];
+      if (lastNode.nodeType === Node.TEXT_NODE) {
+        range.setStart(lastNode, lastNode.textContent.length);
+      } else if (lastNode.childNodes.length > 0) {
+        const inner = lastNode.childNodes[lastNode.childNodes.length - 1];
+        range.setStart(inner, inner.textContent.length);
+      } else {
+        range.setStartAfter(lastNode);
+      }
+      range.collapse(true);
+      const rangeRect = range.getBoundingClientRect();
+      cursorEl.style.left = (rangeRect.left - screenRect.left) + 'px';
+      cursorEl.style.top = (rangeRect.top - screenRect.top) + 'px';
+    } else {
+      cursorEl.style.left = '1ch';
+      cursorEl.style.top = '1em';
+    }
+  }
+
+  function showCursor() { cursorEl.classList.remove('hidden'); cursorEl.classList.add('blink'); }
+  function hideCursor() { cursorEl.classList.add('hidden'); cursorEl.classList.remove('blink'); }
+
+  function delay(ms) {
+    return new Promise(r => setTimeout(r, ms));
+  }
+
+  // Wait for any key press, returns a promise
+  function waitForKey() {
+    showCursor();
+    return new Promise((resolve) => {
+      function handler(e) {
+        document.removeEventListener('keydown', handler);
+        document.removeEventListener('click', clickHandler);
+        resolve(e.key);
+      }
+      function clickHandler() {
+        document.removeEventListener('keydown', handler);
+        document.removeEventListener('click', clickHandler);
+        resolve('click');
+      }
+      document.addEventListener('keydown', handler);
+      document.addEventListener('click', clickHandler);
+    });
+  }
+
+  return {
+    clear,
+    write,
+    writeLine,
+    typeText,
+    typeLine,
+    delay,
+    showCursor,
+    hideCursor,
+    waitForKey,
+    cancelAnyTyping,
+    get element() { return el; }
+  };
+})();
