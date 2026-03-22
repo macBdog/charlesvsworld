@@ -45,17 +45,17 @@ html, body {
 
 #screen {
   position: relative;
-  width: 82ch;
-  max-width: 95vw;
+  width: min(97vw, 102ch);
+  max-width: 97vw;
   height: 90vh;
   max-height: 90vh;
-  padding: 1em 1ch;
+  padding: 1.2em 2ch;
   background: #05050f;
   border-radius: 12px;
   overflow-y: auto;
   overflow-x: hidden;
   font-family: 'VT323', 'Courier New', monospace;
-  font-size: clamp(12px, 1.8vw, 20px);
+  font-size: clamp(18px, 2.4vw, 30px);
   line-height: 1.2;
   color: var(--light-gray);
   box-shadow:
@@ -170,4 +170,13 @@ html, body {
 #screen {
   user-select: none;
   -webkit-user-select: none;
+}
+
+/* Box-drawing characters: force exactly 1ch so they stay aligned with ASCII.
+   VT323 renders these glyphs wider than regular characters. */
+.bc {
+  display: inline-block;
+  width: 1ch;
+  text-align: center;
+  overflow: visible;
 }

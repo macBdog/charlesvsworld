@@ -1,16 +1,15 @@
 // main.js — Boot sequence orchestration and screen flow
 (async function () {
-  const { s, C } = Ansi;
+  const { s, p, C } = Ansi;
 
   // Need a user gesture to enable audio context
   Terminal.clear();
-  Terminal.writeLine([s('  \u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557', C.B)]);
-  Terminal.writeLine([s('  \u2551', C.B), s('                                                        ', C.G), s('\u2551', C.B)]);
-  Terminal.writeLine([s('  \u2551', C.B), s('     CHARLES vs WORLD BBS', C.M), s('                               ', C.G), s('\u2551', C.B)]);
-  Terminal.writeLine([s('  \u2551', C.B), s('                                                        ', C.G), s('\u2551', C.B)]);
-  Terminal.writeLine([s('  \u2551', C.B), s('     Press any key or click to connect...', C.C), s('               ', C.G), s('\u2551', C.B)]);
-  Terminal.writeLine([s('  \u2551', C.B), s('                                                        ', C.G), s('\u2551', C.B)]);
-  Terminal.writeLine([s('  \u255A\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255D', C.B)]);
+  // Splash box: 56-char inner width, centred via renderLines(lines, 58)
+  Ansi.renderLines(Ansi.Layout.splashBox([
+    { text: 'CHARLES vs WORLD BBS', color: C.M },
+    { text: '' },
+    { text: 'Press any key or click to connect...', color: C.C },
+  ], { innerWidth: 56 }), 58);
 
   await Terminal.waitForKey();
 
@@ -30,43 +29,18 @@
   // ATDT — Dial
   await Terminal.typeText([s('ATDT 555-0199', C.G)], 40);
 
-  // Start modem sound sequence
-  const soundDuration = Modem.playFullSequence();
+  // Start modem dial sounds (no handshake)
+  const soundDuration = Modem.playDialOnly();
   Terminal.write('\n');
-  await Terminal.delay(200);
 
-  // Show "dialing" feedback
-  await Terminal.typeLine([s('DIALING...', C.DG)], 60);
-  await Terminal.delay(800);
-
-  // Handshake noise text
-  await Terminal.typeLine([s('\u2591\u2592\u2593\u2588\u2593\u2592\u2591\u2592\u2593\u2588\u2588\u2593\u2591\u2592\u2593\u2588\u2593\u2592\u2591\u2592\u2593\u2588\u2593\u2591\u2592\u2593\u2588\u2593\u2592\u2591', C.DG)], 15);
-  await Terminal.delay(600);
+  // Wait for dial tones to finish
+  await Terminal.delay(soundDuration * 1000);
 
   // CONNECT
   await Terminal.typeLine([s('CONNECT 14400/ARQ/V.32bis', C.W)], 25);
-  await Terminal.delay(500);
   Terminal.writeLine('');
 
-  // Wait for sound to finish if still playing
-  const elapsed = 2800; // approximate ms we've spent in text animation
-  const remaining = (soundDuration * 1000) - elapsed;
-  if (remaining > 0) await Terminal.delay(remaining);
-
-  // ── WELCOME / TITLE SCREEN ──
-  Terminal.clear();
-
-  const banner = Ansi.getTitleBanner();
-  await Ansi.renderArtAnimated(banner, 25);
-
-  Terminal.writeLine([s('  SysOp: ', C.C), s('macBdog', C.W), s('  \u2502  ', C.DG), s('Node 1', C.G), s('  \u2502  ', C.DG), s('14400 bps', C.G), s('  \u2502  ', C.DG), s('ANSI Detected', C.C)]);
-  Terminal.writeLine([s('  "Striving to be the best BBS this side of the internet!"', C.DG)]);
-  Terminal.writeLine('');
-  Terminal.writeLine([s('  Press any key to continue...', C.C)]);
-
-  await Terminal.waitForKey();
-
-  // Pre-fetch repos in background while user reads title
+  // Pre-fetch repos in background
   GitHub.fetchRepos();
 
   // ── MAIN MENU ──

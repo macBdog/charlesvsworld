@@ -1,0 +1,8 @@
+[
+  {
+    "slug": "burn-test-robot",
+    "title": "Burn Test Robot",
+    "date": "2024-06-15",
+    "summary": "Arduino-powered robot that repeatedly applies a soldering iron to samples for timed burn testing."
+  }
+]

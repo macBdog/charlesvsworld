@@ -1,6 +1,23 @@
 // menu.js — BBS menu system with keyboard + click navigation
 const Menu = (() => {
-  const { s, p, C } = Ansi;
+  const { s, p, C, indent, Box, wrapText, Layout } = Ansi;
+
+  // All boxes: 60-char inner width, centred in the 96-col screen.
+  // Box total width = inner(60) + borders(2) = 62.  PAD = indent(62).
+  const BOX_W = 60;
+  const b     = Box({ innerWidth: BOX_W });
+  const PAD   = p(indent(BOX_W + 2));
+
+  // Render a normal (non-clickable) box line centred on screen
+  function wl(segs) {
+    Terminal.writeLine([PAD, ...segs]);
+  }
+
+  // Render a clickable box line (full row including borders)
+  function wlClick(rowSegs, onClick) {
+    Terminal.writeClickLine([PAD, ...rowSegs], onClick);
+  }
+
   let currentHandler = null;
 
   function removeHandler() {
@@ -16,105 +33,103 @@ const Menu = (() => {
     document.addEventListener('keydown', currentHandler);
   }
 
+  // ── Wider box for repo listings ──
+  const FA_W  = 80;
+  const fb    = Box({ innerWidth: FA_W });
+  const FPAD  = p(indent(FA_W + 2));
+
+  function fwl(segs) { Terminal.writeLine([FPAD, ...segs]); }
+  function fwlClick(rowSegs, onClick) { Terminal.writeClickLine([FPAD, ...rowSegs], onClick); }
+
   // ── MAIN MENU ──
+  const LABEL_W = 14;
+  const DESC_W  = 34;
+
+  function writeMenuItem(key, label, desc, onClick) {
+    wlClick(b.row([
+      s('  [', C.B),
+      s(key, C.W),
+      s('] ', C.B),
+      s(label.padEnd(LABEL_W), C.C),
+      s('  \u2502  ', C.DG),
+      s(desc.padEnd(DESC_W), C.G),
+    ]), onClick);
+  }
+
   async function showMainMenu() {
     Terminal.clear();
     Terminal.hideCursor();
 
-    // Draw character art on the left side
-    const art = Ansi.getMenuArt();
-    await Ansi.renderArtAnimated(art, 20);
+    await Ansi.renderArtAnimated(Ansi.getTitleBanner(), 25);
 
+    Terminal.writeLine([PAD, s('SysOp: ', C.C), s('macBdog', C.W), s('  \u2502  ', C.DG), s('Node 1', C.G), s('  \u2502  ', C.DG), s('14400 bps', C.G), s('  \u2502  ', C.DG), s('ANSI Detected', C.C)]);
+    Terminal.writeLine([PAD, s('"Workshop dwellers unite!"', C.DG)]);
     Terminal.writeLine('');
 
-    // Menu box to the right — rendered below the art for terminal simplicity
-    Terminal.writeLine([s('\u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557', C.B)]);
-    Terminal.writeLine([s('\u2551', C.B), s('         CHARLES vs WORLD \u2014 MAIN MENU', C.M), s('                       \u2551', C.B)]);
-    Terminal.writeLine([s('\u2560\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2563', C.B)]);
-    Terminal.writeLine([s('\u2551', C.B), s('                                                            ', C.G), s('\u2551', C.B)]);
-
-    // Menu items as clickable spans
-    writeMenuItem('F', 'File Areas', 'Browse Projects', () => showFileAreas());
-    writeMenuItem('B', 'Bulletin Board', 'Latest Updates', () => showBulletin());
-    writeMenuItem('I', 'System Info', 'About the SysOp', () => showSysInfo());
-    writeMenuItem('G', 'Goodbye', 'Logoff', () => showGoodbye());
-
-    Terminal.writeLine([s('\u2551', C.B), s('                                                            ', C.G), s('\u2551', C.B)]);
-    Terminal.writeLine([s('\u255A\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255D', C.B)]);
-    Terminal.writeLine([s('  Time Left: 58 min \u2502 ', C.DG), s('Select: ', C.G), s('_', C.W)]);
+    wl(b.top('MAIN MENU', C.M));
+    wl(b.emptyRow());
+    writeMenuItem('G', 'Games',       'Game engines in Python and C++',       () => showGames());
+    writeMenuItem('A', 'Apps',        'Useful and not-so useful web apps',    () => showApps());
+    writeMenuItem('E', 'Engineering', 'Cars, microcontrollers, CNC projects', () => showProjects());
+    writeMenuItem('I', 'System Info', 'About the SysOp',                     () => showSysInfo());
+    writeMenuItem('Q', 'Goodbye',     'Logoff',                              () => showGoodbye());
+    wl(b.emptyRow());
+    wl(b.bottom());
+    wl(b.shadowFloor());
+    Terminal.writeLine('');
+    Terminal.writeLine([PAD, s('Time Left: 58 min \u2502 ', C.DG), s('Select: ', C.G), s('_', C.W)]);
 
     Terminal.showCursor();
-
     setHandler((e) => {
       const key = e.key.toUpperCase();
-      if (key === 'F') { removeHandler(); showFileAreas(); }
-      else if (key === 'B') { removeHandler(); showBulletin(); }
+      if      (key === 'G') { removeHandler(); showGames(); }
+      else if (key === 'A') { removeHandler(); showApps(); }
+      else if (key === 'E') { removeHandler(); showProjects(); }
       else if (key === 'I') { removeHandler(); showSysInfo(); }
-      else if (key === 'G') { removeHandler(); showGoodbye(); }
+      else if (key === 'Q') { removeHandler(); showGoodbye(); }
     });
   }
 
-  function writeMenuItem(key, label, desc, onClick) {
-    const el = Terminal.element;
-    const line = document.createElement('span');
-
-    const border1 = document.createElement('span');
-    border1.className = 'fg-blue';
-    border1.textContent = '\u2551  ';
-    line.appendChild(border1);
-
-    const item = document.createElement('span');
-    item.className = 'menu-item fg-cyan';
-    item.textContent = `[${key}] ${label}`;
-    item.addEventListener('click', (e) => { e.stopPropagation(); removeHandler(); onClick(); });
-    line.appendChild(item);
-
-    const descSpan = document.createElement('span');
-    descSpan.className = 'fg-light-gray';
-    const pad = 24 - label.length - key.length;
-    descSpan.textContent = ' '.repeat(Math.max(1, pad)) + '- ' + desc;
-    line.appendChild(descSpan);
-
-    const padEnd = 60 - 5 - label.length - Math.max(1, pad) - 2 - desc.length;
-    const endPad = document.createElement('span');
-    endPad.textContent = ' '.repeat(Math.max(1, padEnd));
-    line.appendChild(endPad);
-
-    const border2 = document.createElement('span');
-    border2.className = 'fg-blue';
-    border2.textContent = '\u2551';
-    line.appendChild(border2);
-
-    el.appendChild(line);
-    el.appendChild(document.createTextNode('\n'));
+  // ── GAMES (filtered repo list) ──
+  async function showGames() {
+    const repos = await GitHub.fetchRepos();
+    const games = GitHub.filterGames(repos);
+    showRepoList('GAMES', games, showGames);
   }
 
-  // ── FILE AREAS ──
-  async function showFileAreas() {
+  // ── APPS (filtered repo list) ──
+  async function showApps() {
+    const repos = await GitHub.fetchRepos();
+    const apps = GitHub.filterApps(repos);
+    showRepoList('APPS', apps, showApps);
+  }
+
+  // ── Shared repo list renderer ──
+  function showRepoList(title, repos, returnFn) {
     Terminal.clear();
     Terminal.hideCursor();
 
-    const art = Ansi.getFileAreasArt();
-    await Ansi.renderArtAnimated(art, 15);
+    fwl(fb.top(title, C.M));
+    fwl(fb.row([
+      s(' #   ', C.DG),
+      s('Area Name' + ' '.repeat(24), C.C),
+      s('Lang   ', C.B),
+      s('Description', C.G),
+    ]));
+    fwl(fb.divider());
+
+    repos.forEach((repo, i) => writeFileItem(i, repo, returnFn));
+
+    fwl(fb.divider());
+    fwl(fb.row([
+      s('[', C.C), s('#', C.W), s('] View Details     ', C.C),
+      s('[', C.C), s('M', C.W), s('] Main Menu     ', C.C),
+      s('[', C.C), s('Q', C.W), s('] Quit', C.C),
+    ]));
+    fwl(fb.bottom());
+    fwl(fb.shadowFloor());
     Terminal.writeLine('');
-
-    Terminal.writeLine([s('\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 ', C.B), s('FILE AREAS', C.M), s(' \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550', C.B)]);
-    Terminal.writeLine([s(' #  ', C.W), s('Area Name                ', C.C), s('Lang   ', C.B), s('Description', C.G)]);
-    Terminal.writeLine([s('\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500', C.DG)]);
-
-    const repos = await GitHub.fetchRepos();
-
-    repos.forEach((repo, i) => {
-      const num = String(i + 1).padStart(2, ' ');
-      const name = GitHub.truncate(repo.name, 24).padEnd(24, ' ');
-      const lang = GitHub.shortLang(repo.language).padEnd(6, ' ');
-      const desc = GitHub.truncate(repo.description, 24);
-      writeFileItem(num, name, lang, desc, repo);
-    });
-
-    Terminal.writeLine([s('\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500', C.DG)]);
-    Terminal.writeLine([s(' [#] View Details  ', C.C), s('[M] Main Menu  ', C.C), s('[Q] Quit', C.C)]);
-    Terminal.writeLine([s(' Select: ', C.G), s('_', C.W)]);
+    Terminal.writeLine([FPAD, s('Select: ', C.G), s('_', C.W)]);
     Terminal.showCursor();
 
     setHandler((e) => {
@@ -123,131 +138,167 @@ const Menu = (() => {
       else if (key === 'Q') { removeHandler(); showGoodbye(); }
       else {
         const num = parseInt(e.key);
-        if (num >= 1 && num <= repos.length) {
-          removeHandler();
-          showRepoDetail(repos[num - 1]);
-        }
+        if (num >= 1 && num <= repos.length) { removeHandler(); showRepoDetail(repos[num - 1], returnFn); }
       }
     });
   }
 
-  function writeFileItem(num, name, lang, desc, repo) {
-    const el = Terminal.element;
-    const line = document.createElement('span');
-    line.className = 'menu-item';
+  function writeFileItem(i, repo, returnFn) {
+    const num  = String(i + 1).padStart(2);
+    const name = GitHub.truncate(repo.name, 33).padEnd(33);
+    const lang = GitHub.shortLang(repo.language).padEnd(6);
+    const desc = GitHub.truncate(repo.description || '', 34);
 
-    const numSpan = document.createElement('span');
-    numSpan.className = 'fg-white';
-    numSpan.textContent = ` ${num}  `;
-    line.appendChild(numSpan);
-
-    const nameSpan = document.createElement('span');
-    nameSpan.className = 'fg-cyan';
-    nameSpan.textContent = name;
-    line.appendChild(nameSpan);
-
-    const langSpan = document.createElement('span');
-    langSpan.className = 'fg-blue';
-    langSpan.textContent = lang + ' ';
-    line.appendChild(langSpan);
-
-    const descSpan = document.createElement('span');
-    descSpan.className = 'fg-light-gray';
-    descSpan.textContent = desc;
-    line.appendChild(descSpan);
-
-    line.addEventListener('click', (e) => { e.stopPropagation(); removeHandler(); showRepoDetail(repo); });
-
-    el.appendChild(line);
-    el.appendChild(document.createTextNode('\n'));
+    fwlClick(fb.row([
+      s(' ' + num + '  ', C.W),
+      s(name, C.C),
+      s(lang + ' ', C.B),
+      s(desc, C.G),
+    ]), () => showRepoDetail(repo, returnFn));
   }
 
   // ── REPO DETAIL VIEW ──
-  async function showRepoDetail(repo) {
+  function showRepoDetail(repo, returnFn) {
     Terminal.clear();
     Terminal.hideCursor();
 
-    Terminal.writeLine([s('\u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557', C.B)]);
-    Terminal.writeLine([s('\u2551  ', C.B), s('FILE DETAIL', C.M), s('                                                 \u2551', C.B)]);
-    Terminal.writeLine([s('\u2560\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2563', C.B)]);
-    Terminal.writeLine([s('\u2551', C.B), s('                                                            ', C.G), s('\u2551', C.B)]);
-    Terminal.writeLine([s('\u2551  ', C.B), s('Name     : ', C.C), s(GitHub.truncate(repo.name, 46).padEnd(46), C.W), s(' \u2551', C.B)]);
-    Terminal.writeLine([s('\u2551  ', C.B), s('Language : ', C.C), s(repo.language.padEnd(46), C.G), s(' \u2551', C.B)]);
-    Terminal.writeLine([s('\u2551  ', C.B), s('Stars    : ', C.C), s(String(repo.stargazers_count).padEnd(46), C.G), s(' \u2551', C.B)]);
-    Terminal.writeLine([s('\u2551  ', C.B), s('Updated  : ', C.C), s(GitHub.shortDate(repo.updated_at).padEnd(46), C.G), s(' \u2551', C.B)]);
-    Terminal.writeLine([s('\u2551', C.B), s('                                                            ', C.G), s('\u2551', C.B)]);
-    Terminal.writeLine([s('\u2551  ', C.B), s('Description:', C.C), s('                                               \u2551', C.B)]);
+    const lang    = repo.language || 'Unknown';
+    const stars   = String(repo.stargazers_count);
+    const updated = GitHub.shortDate(repo.updated_at);
+    const url     = GitHub.truncate(repo.html_url, 51);
 
-    // Word wrap description to fit
-    const maxW = 56;
-    const words = repo.description.split(' ');
-    let line = '';
-    for (const word of words) {
-      if ((line + ' ' + word).trim().length > maxW) {
-        Terminal.writeLine([s('\u2551  ', C.B), s(line.padEnd(58), C.G), s('\u2551', C.B)]);
-        line = word;
-      } else {
-        line = (line + ' ' + word).trim();
-      }
-    }
-    if (line) {
-      Terminal.writeLine([s('\u2551  ', C.B), s(line.padEnd(58), C.G), s('\u2551', C.B)]);
+    wl(b.top('FILE DETAIL', C.M));
+    wl(b.emptyRow());
+    wl(b.row([s('  Name     : ', C.C), s(GitHub.truncate(repo.name, 45), C.W)]));
+    wl(b.row([s('  Language : ', C.C), s(lang, C.G)]));
+    wl(b.row([s('  Stars    : ', C.C), s(stars, C.G)]));
+    wl(b.row([s('  Updated  : ', C.C), s(updated, C.G)]));
+    wl(b.emptyRow());
+    wl(b.divider('Description', C.C));
+    wl(b.emptyRow());
+
+    for (const ln of wrapText(repo.description || '', 56)) {
+      wl(b.row([s('  ' + ln, C.G)]));
     }
 
-    Terminal.writeLine([s('\u2551', C.B), s('                                                            ', C.G), s('\u2551', C.B)]);
-    Terminal.writeLine([s('\u2551  ', C.B), s('URL: ', C.C), s(GitHub.truncate(repo.html_url, 53).padEnd(53), C.B), s(' \u2551', C.B)]);
-    Terminal.writeLine([s('\u2551', C.B), s('                                                            ', C.G), s('\u2551', C.B)]);
-    Terminal.writeLine([s('\u255A\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255D', C.B)]);
+    wl(b.emptyRow());
+    wl(b.divider());
+    wl(b.row([s('  URL: ', C.C), s(url, C.B)]));
+    wl(b.emptyRow());
+    wl(b.bottom());
+    wl(b.shadowFloor());
     Terminal.writeLine('');
-    Terminal.writeLine([s('  [V] Open in Browser  ', C.C), s('[F] Back to Files  ', C.C), s('[M] Main Menu', C.C)]);
-    Terminal.writeLine([s('  Select: ', C.G), s('_', C.W)]);
+    Terminal.writeLine([PAD, s('[V] Open in Browser   ', C.C), s('[B] Back   ', C.C), s('[M] Main Menu', C.C)]);
+    Terminal.writeLine([PAD, s('Select: ', C.G), s('_', C.W)]);
     Terminal.showCursor();
 
     setHandler((e) => {
       const key = e.key.toUpperCase();
-      if (key === 'V') { window.open(repo.html_url, '_blank'); }
-      else if (key === 'F') { removeHandler(); showFileAreas(); }
+      if      (key === 'V') window.open(repo.html_url, '_blank');
+      else if (key === 'B') { removeHandler(); returnFn(); }
       else if (key === 'M') { removeHandler(); showMainMenu(); }
     });
   }
 
-  // ── BULLETIN BOARD ──
-  async function showBulletin() {
+  // ── ENGINEERING (blog-style post list) ──
+  async function showProjects() {
     Terminal.clear();
     Terminal.hideCursor();
 
-    const art = Ansi.getBulletinArt();
-    await Ansi.renderArtAnimated(art, 20);
-    Terminal.writeLine('');
+    const posts = await Blog.fetchPosts();
 
-    Terminal.writeLine([s('\u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557', C.B)]);
-    Terminal.writeLine([s('\u2551  ', C.B), s('BULLETIN BOARD', C.M), s('                                              \u2551', C.B)]);
-    Terminal.writeLine([s('\u2560\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2563', C.B)]);
-    Terminal.writeLine([s('\u2551', C.B), s('                                                            ', C.G), s('\u2551', C.B)]);
-    Terminal.writeLine([s('\u2551  ', C.B), s('>> Message of the Day', C.C), s('                                       \u2551', C.B)]);
-    Terminal.writeLine([s('\u2551', C.B), s('                                                            ', C.G), s('\u2551', C.B)]);
-    Terminal.writeLine([s('\u2551  ', C.B), s('Welcome to Charles vs World BBS!', C.G), s('                            \u2551', C.B)]);
-    Terminal.writeLine([s('\u2551', C.B), s('                                                            ', C.G), s('\u2551', C.B)]);
-    Terminal.writeLine([s('\u2551  ', C.B), s('The SysOp has been busy crafting games, tools and', C.G), s('          \u2551', C.B)]);
-    Terminal.writeLine([s('\u2551  ', C.B), s('bizarre contraptions. Check the File Areas for the', C.G), s('         \u2551', C.B)]);
-    Terminal.writeLine([s('\u2551  ', C.B), s('latest projects, or browse System Info to learn more', C.G), s('        \u2551', C.B)]);
-    Terminal.writeLine([s('\u2551  ', C.B), s('about the hardware powering this fine establishment.', C.G), s('        \u2551', C.B)]);
-    Terminal.writeLine([s('\u2551', C.B), s('                                                            ', C.G), s('\u2551', C.B)]);
-    Terminal.writeLine([s('\u2551  ', C.B), s('Remember: keyboard, soldering iron, wrench.', C.M), s('                \u2551', C.B)]);
-    Terminal.writeLine([s('\u2551  ', C.B), s('The three tools of the Technomancer.', C.M), s('                        \u2551', C.B)]);
-    Terminal.writeLine([s('\u2551', C.B), s('                                                            ', C.G), s('\u2551', C.B)]);
-    Terminal.writeLine([s('\u2551  ', C.B), s('                            - macBdog, SysOp', C.DG), s('              \u2551', C.B)]);
-    Terminal.writeLine([s('\u2551', C.B), s('                                                            ', C.G), s('\u2551', C.B)]);
-    Terminal.writeLine([s('\u255A\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255D', C.B)]);
+    wl(b.top('ENGINEERING', C.M));
+    wl(b.row([
+      s(' #   ', C.DG),
+      s('Date         ', C.B),
+      s('Title', C.C),
+    ]));
+    wl(b.divider());
+
+    posts.forEach((post, i) => {
+      const num  = String(i + 1).padStart(2);
+      const date = Blog.formatDate(post.date).padEnd(13);
+      const title = GitHub.truncate(post.title, 38);
+
+      wlClick(b.row([
+        s(' ' + num + '  ', C.W),
+        s(date, C.B),
+        s(title, C.C),
+      ]), () => showPost(post));
+    });
+
+    if (posts.length === 0) {
+      wl(b.emptyRow());
+      wl(b.row([s('  No posts yet.', C.DG)]));
+    }
+
+    wl(b.divider());
+    wl(b.row([
+      s('[', C.C), s('#', C.W), s('] Read Post     ', C.C),
+      s('[', C.C), s('M', C.W), s('] Main Menu     ', C.C),
+      s('[', C.C), s('Q', C.W), s('] Quit', C.C),
+    ]));
+    wl(b.bottom());
+    wl(b.shadowFloor());
     Terminal.writeLine('');
-    Terminal.writeLine([s('  [M] Main Menu  ', C.C), s('[Q] Quit', C.C)]);
-    Terminal.writeLine([s('  Select: ', C.G), s('_', C.W)]);
+    Terminal.writeLine([PAD, s('Select: ', C.G), s('_', C.W)]);
     Terminal.showCursor();
 
     setHandler((e) => {
       const key = e.key.toUpperCase();
       if (key === 'M') { removeHandler(); showMainMenu(); }
       else if (key === 'Q') { removeHandler(); showGoodbye(); }
+      else {
+        const num = parseInt(e.key);
+        if (num >= 1 && num <= posts.length) { removeHandler(); showPost(posts[num - 1]); }
+      }
+    });
+  }
+
+  // ── ENGINEERING POST DETAIL ──
+  async function showPost(post) {
+    Terminal.clear();
+    Terminal.hideCursor();
+
+    const md = await Blog.fetchPostContent(post.slug);
+    const parsed = Blog.parseMarkdown(md);
+
+    wl(b.top(post.title.toUpperCase(), C.M));
+    wl(b.row([s('  Date: ', C.C), s(Blog.formatDate(post.date), C.G)]));
+    wl(b.divider());
+    wl(b.emptyRow());
+
+    for (const block of parsed) {
+      if (block.type === 'h1') continue; // title already in box header
+      if (block.type === 'h2') {
+        wl(b.emptyRow());
+        wl(b.row([s('  >> ' + block.text, C.C)]));
+        wl(b.emptyRow());
+      } else if (block.type === 'li') {
+        for (const ln of wrapText(block.text, 54)) {
+          wl(b.row([s('  ' + ln, C.G)]));
+        }
+      } else if (block.type === 'blank') {
+        wl(b.emptyRow());
+      } else {
+        for (const ln of wrapText(block.text, 54)) {
+          wl(b.row([s('  ' + ln, C.G)]));
+        }
+      }
+    }
+
+    wl(b.emptyRow());
+    wl(b.bottom());
+    wl(b.shadowFloor());
+    Terminal.writeLine('');
+    Terminal.writeLine([PAD, s('[E] Back to Engineering   ', C.C), s('[M] Main Menu', C.C)]);
+    Terminal.writeLine([PAD, s('Select: ', C.G), s('_', C.W)]);
+    Terminal.showCursor();
+
+    setHandler((e) => {
+      const key = e.key.toUpperCase();
+      if      (key === 'E') { removeHandler(); showProjects(); }
+      else if (key === 'M') { removeHandler(); showMainMenu(); }
     });
   }
 
@@ -256,35 +307,34 @@ const Menu = (() => {
     Terminal.clear();
     Terminal.hideCursor();
 
-    const art = Ansi.getSysInfoArt();
-    await Ansi.renderArtAnimated(art, 20);
+    await Ansi.renderArtAnimated(Ansi.getSysInfoArt(), 20);
     Terminal.writeLine('');
 
-    Terminal.writeLine([s('\u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557', C.B)]);
-    Terminal.writeLine([s('\u2551  ', C.B), s('SYSTEM INFORMATION', C.M), s('                                          \u2551', C.B)]);
-    Terminal.writeLine([s('\u2560\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2563', C.B)]);
-    Terminal.writeLine([s('\u2551', C.B), s('                                                            ', C.G), s('\u2551', C.B)]);
-    Terminal.writeLine([s('\u2551  ', C.B), s('SysOp   : ', C.C), s('macBdog', C.W), s('                                           \u2551', C.B)]);
-    Terminal.writeLine([s('\u2551  ', C.B), s('System  : ', C.C), s('486 DX2-66MHz', C.G), s('                                     \u2551', C.B)]);
-    Terminal.writeLine([s('\u2551  ', C.B), s('Memory  : ', C.C), s('8MB RAM (4x 30-pin SIMMs)', C.G), s('                           \u2551', C.B)]);
-    Terminal.writeLine([s('\u2551  ', C.B), s('Modem   : ', C.C), s('USR Sportster 14.4k', C.G), s('                                 \u2551', C.B)]);
-    Terminal.writeLine([s('\u2551  ', C.B), s('OS      : ', C.C), s('MS-DOS 6.22 + DESQview', C.G), s('                              \u2551', C.B)]);
-    Terminal.writeLine([s('\u2551  ', C.B), s('BBS SW  : ', C.C), s('RemoteAccess 2.62', C.G), s('                                   \u2551', C.B)]);
-    Terminal.writeLine([s('\u2551  ', C.B), s('Storage : ', C.C), s('540MB Quantum Fireball', C.G), s('                              \u2551', C.B)]);
-    Terminal.writeLine([s('\u2551  ', C.B), s('Video   : ', C.C), s('Trident TVGA 9000i (512KB)', C.G), s('                          \u2551', C.B)]);
-    Terminal.writeLine([s('\u2551  ', C.B), s('Uptime  : ', C.C), s('\u221E hrs and counting...', C.G), s('                              \u2551', C.B)]);
-    Terminal.writeLine([s('\u2551', C.B), s('                                                            ', C.G), s('\u2551', C.B)]);
-    Terminal.writeLine([s('\u2551  ', C.B), s('GitHub  : ', C.C), s('github.com/macBdog', C.B), s('                                  \u2551', C.B)]);
-    Terminal.writeLine([s('\u2551', C.B), s('                                                            ', C.G), s('\u2551', C.B)]);
-    Terminal.writeLine([s('\u255A\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255D', C.B)]);
+    const sysLines = Layout.infoPanel('SYSTEM INFORMATION', [
+      { key: 'SysOp',   value: 'macBdog' },
+      { key: 'System',  value: '486 DX2-66MHz' },
+      { key: 'Memory',  value: '8MB RAM (4x 30-pin SIMMs)' },
+      { key: 'Modem',   value: 'USR Sportster 14.4k' },
+      { key: 'OS',      value: 'MS-DOS 6.22 + DESQview' },
+      { key: 'BBS SW',  value: 'RemoteAccess 2.62' },
+      { key: 'Storage', value: '540MB Quantum Fireball' },
+      { key: 'Video',   value: 'Trident TVGA 9000i (512KB)' },
+      { key: 'Uptime',  value: '\u221E hrs and counting...' },
+    ], {
+      innerWidth: BOX_W,
+      titleColor: C.M,
+      footer: [{ key: 'GitHub', value: 'github.com/macBdog', vColor: C.B }],
+    });
+    for (const line of sysLines) wl(line);
+
     Terminal.writeLine('');
-    Terminal.writeLine([s('  [M] Main Menu  ', C.C), s('[Q] Quit', C.C)]);
-    Terminal.writeLine([s('  Select: ', C.G), s('_', C.W)]);
+    Terminal.writeLine([PAD, s('[M] Main Menu  ', C.C), s('[Q] Quit', C.C)]);
+    Terminal.writeLine([PAD, s('Select: ', C.G), s('_', C.W)]);
     Terminal.showCursor();
 
     setHandler((e) => {
       const key = e.key.toUpperCase();
-      if (key === 'M') { removeHandler(); showMainMenu(); }
+      if      (key === 'M') { removeHandler(); showMainMenu(); }
       else if (key === 'Q') { removeHandler(); showGoodbye(); }
     });
   }
@@ -294,19 +344,9 @@ const Menu = (() => {
     Terminal.clear();
     Terminal.hideCursor();
     removeHandler();
-
-    const art = Ansi.getGoodbyeArt();
-    await Ansi.renderArtAnimated(art, 60);
-
-    // NO CARRIER blinks, then freeze
+    await Ansi.renderArtAnimated(Ansi.getGoodbyeArt(), 60);
     await Terminal.delay(2000);
   }
 
-  return {
-    showMainMenu,
-    showFileAreas,
-    showBulletin,
-    showSysInfo,
-    showGoodbye
-  };
+  return { showMainMenu, showGames, showApps, showProjects, showSysInfo, showGoodbye };
 })();

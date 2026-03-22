@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="css/bbs.css">
+  <style>
+    body { margin: 20px; background: #05050f; color: #AAAAAA; }
+    #test { white-space: pre; font-family: 'VT323','Courier New',monospace; font-size: 24px; line-height: 1.2; }
+    #result { font-family: 'Courier New',monospace; font-size: 13px; margin-top: 20px; color: #55FFFF; }
+  </style>
+</head>
+<body>
+  <canvas id="c" style="display:none" width="1" height="1"></canvas>
+  <div id="test">
+RULER: 0         1         2         3         4         5         6
+       0123456789012345678901234567890123456789012345678901234567890123
+BOX60: ╔════════════════════════════════════════════════════════════╗
+ROW60: ║                                                            ║░
+BOT60: ╚════════════════════════════════════════════════════════════╝░
+SHADE:  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+ASCII: ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz
+TITLE: ╔══ CHARLES vs WORLD ═ MAIN MENU ═════════════════════════╗
+DIV:   ╠════════════════════════════════════════════════════════════╣░
+MIXED: ║  [F] File Areas        │  Browse Projects                ║░
+  </div>
+  <div id="result">measuring char widths...</div>
+  <script>
+    window.onload = function() {
+      // Wait for VT323 to load
+      document.fonts.ready.then(function() {
+        var el = document.getElementById('test');
+        var style = window.getComputedStyle(el);
+        var fs = style.fontSize;
+        var ff = style.fontFamily;
+
+        var c = document.getElementById('c');
+        c.width = 400; c.height = 40;
+        var ctx = c.getContext('2d');
+        ctx.font = fs + ' ' + ff;
+
+        var testChars = ['A','B',' ','0','═','║','╔','╗','╠','╣','╚','╝','░','▒','▓','─','│','█'];
+        var results = {};
+        testChars.forEach(function(ch) {
+          results[ch] = ctx.measureText(ch).width.toFixed(2);
+        });
+
+        // Also measure a string of 62 chars to see total width
+        var ruler62 = '0123456789012345678901234567890123456789012345678901234567890';
+        var box62   = '╔════════════════════════════════════════════════════════════╗';
+        var row62   = '║                                                            ║';
+        results['ruler61'] = ctx.measureText(ruler62).width.toFixed(2) + ' (61 ASCII)';
+        results['box62'] = ctx.measureText(box62).width.toFixed(2) + ' (62 box chars)';
+        results['row62'] = ctx.measureText(row62).width.toFixed(2) + ' (62 mixed)';
+
+        var out = 'FONT: ' + fs + ' ' + ff + '\n\n';
+        out += 'Per-char widths:\n';
+        testChars.forEach(function(ch) {
+          var marker = (results[ch] !== results['A']) ? ' <<< MISMATCH vs A' : '';
+          out += '  ' + ch + ' : ' + results[ch] + 'px' + marker + '\n';
+        });
+        out += '\nString widths:\n';
+        out += '  ' + results['ruler61'] + '\n';
+        out += '  ' + results['box62'] + '\n';
+        out += '  ' + results['row62'] + '\n';
+
+        document.getElementById('result').textContent = out;
+      });
+    };
+  </script>
+</body>
+</html>

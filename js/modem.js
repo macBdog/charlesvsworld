@@ -148,8 +148,30 @@ const Modem = (() => {
     return t - now; // total duration in seconds
   }
 
+  // Dial-only sequence (no handshake/ringing), returns total duration
+  function playDialOnly() {
+    const c = ensureContext();
+    const now = c.currentTime + 0.05;
+    let t = now;
+
+    // Dial tone
+    playDialTone(t, 0.4);
+    t += 0.5;
+
+    // DTMF dialing "5550199"
+    t = dialNumber('5550199', t);
+    t += 0.2;
+
+    // Connect chime
+    playConnectChime(t);
+    t += 0.3;
+
+    return t - now;
+  }
+
   return {
     ensureContext,
-    playFullSequence
+    playFullSequence,
+    playDialOnly
   };
 })();

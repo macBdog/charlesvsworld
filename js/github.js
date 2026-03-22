@@ -67,9 +67,31 @@ const GitHub = (() => {
     return `${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
   }
 
+  // Repos classified as games (by name)
+  const GAME_REPOS = new Set([
+    'midimaster', 'gamejam', 'galagus', 'game', 'jump-buggy',
+    'genericgamedev-gpu-particles'
+  ]);
+
+  // Repos classified as apps (by name)
+  const APP_REPOS = new Set([
+    'pixel-workshop-garage', 'brownish-bomber', 'charlesvsworld',
+    'burntestrobot'
+  ]);
+
+  function filterGames(repos) {
+    return repos.filter(r => GAME_REPOS.has(r.name));
+  }
+
+  function filterApps(repos) {
+    return repos.filter(r => APP_REPOS.has(r.name));
+  }
+
   return {
     USERNAME,
     fetchRepos,
+    filterGames,
+    filterApps,
     shortLang,
     truncate,
     shortDate

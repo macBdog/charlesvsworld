@@ -4,8 +4,60 @@ const Terminal = (() => {
   const cursorEl = document.getElementById('cursor');
   let abortController = null;
 
+  // Box-drawing + block-element range: U+2500–U+259F
+  const _BOX_RE = /[\u2500-\u259F]/;
+
+  // Append a single segment to `parent`, wrapping box-drawing chars in .bc spans
+  // so VT323's wider glyphs are constrained to exactly 1ch.
+  function appendSeg(seg, parent) {
+    const text = seg.text;
+    const cls  = seg.color ? 'fg-' + seg.color : null;
+    if (!_BOX_RE.test(text)) {
+      if (cls) {
+        const sp = document.createElement('span');
+        sp.className = cls;
+        sp.textContent = text;
+        parent.appendChild(sp);
+      } else {
+        parent.appendChild(document.createTextNode(text));
+      }
+      return;
+    }
+    // Mixed string: split into runs of box vs normal chars
+    let run = '', runIsBox = null;
+    function flush() {
+      if (!run) return;
+      if (runIsBox) {
+        for (const ch of run) {
+          const sp = document.createElement('span');
+          sp.className = cls ? cls + ' bc' : 'bc';
+          sp.textContent = ch;
+          parent.appendChild(sp);
+        }
+      } else {
+        if (cls) {
+          const sp = document.createElement('span');
+          sp.className = cls;
+          sp.textContent = run;
+          parent.appendChild(sp);
+        } else {
+          parent.appendChild(document.createTextNode(run));
+        }
+      }
+      run = '';
+    }
+    for (const ch of text) {
+      const isBox = _BOX_RE.test(ch);
+      if (runIsBox !== null && isBox !== runIsBox) flush();
+      run += ch;
+      runIsBox = isBox;
+    }
+    flush();
+  }
+
   function clear() {
     cancelAnyTyping();
+    hideCursor();
     el.innerHTML = '';
     updateCursorPosition();
   }
@@ -24,14 +76,7 @@ const Terminal = (() => {
       segments = [{ text: segments }];
     }
     for (const seg of segments) {
-      if (seg.color) {
-        const span = document.createElement('span');
-        span.className = 'fg-' + seg.color;
-        span.textContent = seg.text;
-        el.appendChild(span);
-      } else {
-        el.appendChild(document.createTextNode(seg.text));
-      }
+      appendSeg(seg, el);
     }
     if (addNewline) {
       el.appendChild(document.createTextNode('\n'));
@@ -169,10 +214,29 @@ const Terminal = (() => {
     });
   }
 
+  // Render a clickable row: wraps segments in a <span class="menu-item"> with an onClick handler.
+  // Pass the centering PAD as the first segment to keep it inside the clickable area.
+  function writeClickLine(segments, onClick) {
+    if (typeof segments === 'string') {
+      segments = [{ text: segments }];
+    }
+    const wrapper = document.createElement('span');
+    wrapper.className = 'menu-item';
+    wrapper.addEventListener('click', function(e) { e.stopPropagation(); onClick(); });
+    for (const seg of segments) {
+      appendSeg(seg, wrapper);
+    }
+    el.appendChild(wrapper);
+    el.appendChild(document.createTextNode('\n'));
+    scrollToBottom();
+    updateCursorPosition();
+  }
+
   return {
     clear,
     write,
     writeLine,
+    writeClickLine,
     typeText,
     typeLine,
     delay,
