@@ -180,3 +180,19 @@ html, body {
   text-align: center;
   overflow: visible;
 }
+
+/* Inline images in terminal */
+.term-img-wrapper {
+  display: block;
+  text-align: center;
+  margin: 0.4em 0;
+}
+
+.term-img {
+  display: inline-block;
+  image-rendering: auto;
+  border: 2px solid var(--dark-cyan);
+  box-shadow: 0 0 8px rgba(85, 255, 255, 0.3);
+  opacity: 0.92;
+  filter: contrast(1.05) saturate(0.85);
+}

@@ -91,6 +91,28 @@ const Terminal = (() => {
     updateCursorPosition();
   }
 
+  // Render an image inline in the terminal, constrained to box width
+  function writeImage(src, alt, maxWidthCh) {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'term-img-wrapper';
+
+    const img = document.createElement('img');
+    img.src = src;
+    img.alt = alt || '';
+    img.className = 'term-img';
+    // Constrain to roughly maxWidthCh character widths (1ch ≈ 9.6px at our font size)
+    const maxPx = (maxWidthCh || 76) * 9.6;
+    img.style.maxWidth = maxPx + 'px';
+    img.style.maxHeight = '400px';
+    img.onload = () => { scrollToBottom(); updateCursorPosition(); };
+
+    wrapper.appendChild(img);
+    el.appendChild(wrapper);
+    el.appendChild(document.createTextNode('\n'));
+    scrollToBottom();
+    updateCursorPosition();
+  }
+
   // Type text character by character, returns a promise
   // segments: string or array of { text, color }
   function typeText(segments, speed = 30) {
@@ -237,6 +259,7 @@ const Terminal = (() => {
     write,
     writeLine,
     writeClickLine,
+    writeImage,
     typeText,
     typeLine,
     delay,

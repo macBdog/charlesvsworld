@@ -2,9 +2,9 @@
 const Menu = (() => {
   const { s, p, C, indent, Box, wrapText, Layout } = Ansi;
 
-  // All boxes: 60-char inner width, centred in the 96-col screen.
-  // Box total width = inner(60) + borders(2) = 62.  PAD = indent(62).
-  const BOX_W = 60;
+  // All boxes: 80-char inner width, centred in the 96-col screen.
+  // Box total width = inner(80) + borders(2) = 82.  PAD = indent(82).
+  const BOX_W = 80;
   const b     = Box({ innerWidth: BOX_W });
   const PAD   = p(indent(BOX_W + 2));
 
@@ -162,10 +162,11 @@ const Menu = (() => {
     Terminal.clear();
     Terminal.hideCursor();
 
-    const lang    = repo.language || 'Unknown';
-    const stars   = String(repo.stargazers_count);
-    const updated = GitHub.shortDate(repo.updated_at);
-    const url     = GitHub.truncate(repo.html_url, 51);
+    const lang     = repo.language || 'Unknown';
+    const stars    = String(repo.stargazers_count);
+    const updated  = GitHub.shortDate(repo.updated_at);
+    const url      = GitHub.truncate(repo.html_url, 51);
+    const homepage = GitHub.getHomepage(repo.name);
 
     wl(b.top('FILE DETAIL', C.M));
     wl(b.emptyRow());
@@ -183,58 +184,78 @@ const Menu = (() => {
 
     wl(b.emptyRow());
     wl(b.divider());
-    wl(b.row([s('  URL: ', C.C), s(url, C.B)]));
+    if (homepage) {
+      wl(b.row([s('  App: ', C.C), s(GitHub.truncate(homepage, 51), C.W)]));
+    }
+    wl(b.row([s('  Git: ', C.C), s(url, C.B)]));
     wl(b.emptyRow());
+
+    if (homepage) {
+      wlClick(b.row([
+        s('         >>> ', C.M),
+        s('[L] LAUNCH APP', C.W),
+        s(' <<<', C.M),
+      ]), () => window.open(homepage, '_blank'));
+      wl(b.emptyRow());
+    }
+
     wl(b.bottom());
     wl(b.shadowFloor());
     Terminal.writeLine('');
-    Terminal.writeLine([PAD, s('[V] Open in Browser   ', C.C), s('[B] Back   ', C.C), s('[M] Main Menu', C.C)]);
+    const opts = [];
+    if (homepage) opts.push(s('[L] Launch App   ', C.W));
+    opts.push(s('[V] View on GitHub   ', C.C), s('[B] Back   ', C.C), s('[M] Main Menu', C.C));
+    Terminal.writeLine([PAD, ...opts]);
     Terminal.writeLine([PAD, s('Select: ', C.G), s('_', C.W)]);
     Terminal.showCursor();
 
     setHandler((e) => {
       const key = e.key.toUpperCase();
-      if      (key === 'V') window.open(repo.html_url, '_blank');
+      if      (key === 'L' && homepage) window.open(homepage, '_blank');
+      else if (key === 'V') window.open(repo.html_url, '_blank');
       else if (key === 'B') { removeHandler(); returnFn(); }
       else if (key === 'M') { removeHandler(); showMainMenu(); }
     });
   }
 
-  // ── ENGINEERING (blog-style post list) ──
+  // ── ENGINEERING (project list) ──
   async function showProjects() {
     Terminal.clear();
     Terminal.hideCursor();
 
-    const posts = await Blog.fetchPosts();
+    const projects = await Blog.fetchProjects();
 
     wl(b.top('ENGINEERING', C.M));
     wl(b.row([
       s(' #   ', C.DG),
-      s('Date         ', C.B),
-      s('Title', C.C),
+      s('Project'.padEnd(35), C.C),
+      s('Posts', C.B),
     ]));
     wl(b.divider());
 
-    posts.forEach((post, i) => {
-      const num  = String(i + 1).padStart(2);
-      const date = Blog.formatDate(post.date).padEnd(13);
-      const title = GitHub.truncate(post.title, 38);
+    // Support more than 9 items with letter keys (1-9, then a-z)
+    const keyFor = (i) => i < 9 ? String(i + 1) : String.fromCharCode(97 + i - 9);
+
+    projects.forEach((proj, i) => {
+      const key  = keyFor(i);
+      const name = GitHub.truncate(proj.name, 35).padEnd(35);
+      const cnt  = String(proj.count).padStart(3);
 
       wlClick(b.row([
-        s(' ' + num + '  ', C.W),
-        s(date, C.B),
-        s(title, C.C),
-      ]), () => showPost(post));
+        s('  ' + key + '  ', C.W),
+        s(name, C.C),
+        s(cnt, C.G),
+      ]), () => showProjectPosts(proj));
     });
 
-    if (posts.length === 0) {
+    if (projects.length === 0) {
       wl(b.emptyRow());
-      wl(b.row([s('  No posts yet.', C.DG)]));
+      wl(b.row([s('  No projects yet.', C.DG)]));
     }
 
     wl(b.divider());
     wl(b.row([
-      s('[', C.C), s('#', C.W), s('] Read Post     ', C.C),
+      s('[', C.C), s('#', C.W), s('] Open Project     ', C.C),
       s('[', C.C), s('M', C.W), s('] Main Menu     ', C.C),
       s('[', C.C), s('Q', C.W), s('] Quit', C.C),
     ]));
@@ -249,39 +270,138 @@ const Menu = (() => {
       if (key === 'M') { removeHandler(); showMainMenu(); }
       else if (key === 'Q') { removeHandler(); showGoodbye(); }
       else {
+        const k = e.key.toLowerCase();
+        let idx = -1;
+        if (k >= '1' && k <= '9') idx = parseInt(k) - 1;
+        else if (k >= 'a' && k <= 'z') idx = k.charCodeAt(0) - 97 + 9;
+        if (idx >= 0 && idx < projects.length) { removeHandler(); showProjectPosts(projects[idx]); }
+      }
+    });
+  }
+
+  // ── ENGINEERING PROJECT POSTS ──
+  async function showProjectPosts(project) {
+    Terminal.clear();
+    Terminal.hideCursor();
+
+    const posts = await Blog.fetchPostsByProject(project.slug);
+
+    wl(b.top(project.name.toUpperCase(), C.M));
+    wl(b.row([
+      s(' #   ', C.DG),
+      s('Date         ', C.B),
+      s('Title', C.C),
+    ]));
+    wl(b.divider());
+
+    // Paginate: show up to 20 posts per page
+    const PAGE_SIZE = 20;
+    let page = 0;
+    const totalPages = Math.ceil(posts.length / PAGE_SIZE);
+
+    function renderPage() {
+      const start = page * PAGE_SIZE;
+      const slice = posts.slice(start, start + PAGE_SIZE);
+
+      // Re-render from the divider down (first render only for now)
+      slice.forEach((post, i) => {
+        const num  = String(start + i + 1).padStart(2);
+        const date = Blog.formatDate(post.date).padEnd(13);
+        const title = GitHub.truncate(post.title, BOX_W - 24);
+
+        wlClick(b.row([
+          s(' ' + num + '  ', C.W),
+          s(date, C.B),
+          s(title, C.C),
+        ]), () => showPost(post, project));
+      });
+    }
+
+    renderPage();
+
+    if (posts.length === 0) {
+      wl(b.emptyRow());
+      wl(b.row([s('  No posts in this project.', C.DG)]));
+    }
+
+    wl(b.divider());
+    wl(b.row([
+      s('[', C.C), s('#', C.W), s('] Read Post     ', C.C),
+      s('[', C.C), s('E', C.W), s('] Engineering   ', C.C),
+      s('[', C.C), s('M', C.W), s('] Main Menu     ', C.C),
+      s('[', C.C), s('Q', C.W), s('] Quit', C.C),
+    ]));
+    wl(b.bottom());
+    wl(b.shadowFloor());
+    Terminal.writeLine('');
+    if (totalPages > 1) {
+      Terminal.writeLine([PAD, s(`Page ${page + 1}/${totalPages}  `, C.DG), s('[N] Next  [P] Prev  ', C.C)]);
+    }
+    Terminal.writeLine([PAD, s('Select: ', C.G), s('_', C.W)]);
+    Terminal.showCursor();
+
+    setHandler((e) => {
+      const key = e.key.toUpperCase();
+      if (key === 'E') { removeHandler(); showProjects(); }
+      else if (key === 'M') { removeHandler(); showMainMenu(); }
+      else if (key === 'Q') { removeHandler(); showGoodbye(); }
+      else if (key === 'N' && page < totalPages - 1) { removeHandler(); page++; showProjectPosts(project); }
+      else if (key === 'P' && page > 0) { removeHandler(); page--; showProjectPosts(project); }
+      else {
         const num = parseInt(e.key);
-        if (num >= 1 && num <= posts.length) { removeHandler(); showPost(posts[num - 1]); }
+        if (!isNaN(num)) {
+          const idx = page * PAGE_SIZE + num - 1;
+          if (idx >= 0 && idx < posts.length) { removeHandler(); showPost(posts[idx], project); }
+        }
       }
     });
   }
 
   // ── ENGINEERING POST DETAIL ──
-  async function showPost(post) {
+  async function showPost(post, project) {
     Terminal.clear();
     Terminal.hideCursor();
 
-    const md = await Blog.fetchPostContent(post.slug);
-    const parsed = Blog.parseMarkdown(md);
+    const { meta, body } = await Blog.fetchPostContent(post.slug);
+    const parsed = Blog.parseMarkdown(body);
+    const tags = post.tags || meta.tags || [];
+    const repo = post.repo || meta.repo || null;
+    const repoUrl = repo ? `https://github.com/${GitHub.USERNAME}/${repo}` : null;
+    const contentW = BOX_W - 4;
 
     wl(b.top(post.title.toUpperCase(), C.M));
     wl(b.row([s('  Date: ', C.C), s(Blog.formatDate(post.date), C.G)]));
+    if (tags.length) {
+      wl(b.row([s('  Tags: ', C.C), s(tags.join(', '), C.B)]));
+    }
+    if (repo) {
+      wl(b.row([s('  Repo: ', C.C), s(repo, C.B)]));
+    }
     wl(b.divider());
     wl(b.emptyRow());
 
     for (const block of parsed) {
-      if (block.type === 'h1') continue; // title already in box header
+      if (block.type === 'h1') continue;
       if (block.type === 'h2') {
         wl(b.emptyRow());
         wl(b.row([s('  >> ' + block.text, C.C)]));
         wl(b.emptyRow());
+      } else if (block.type === 'h3') {
+        wl(b.row([s('  > ' + block.text, C.C)]));
       } else if (block.type === 'li') {
-        for (const ln of wrapText(block.text, 54)) {
+        for (const ln of wrapText(block.text, contentW)) {
           wl(b.row([s('  ' + ln, C.G)]));
         }
+      } else if (block.type === 'img') {
+        // Resolve image src relative to the post's content folder
+        const imgSrc = block.src.startsWith('http')
+          ? block.src
+          : `content/engineering/${post.slug}/${block.src}`;
+        Terminal.writeImage(imgSrc, block.text || block.src, contentW);
       } else if (block.type === 'blank') {
         wl(b.emptyRow());
       } else {
-        for (const ln of wrapText(block.text, 54)) {
+        for (const ln of wrapText(block.text, contentW)) {
           wl(b.row([s('  ' + ln, C.G)]));
         }
       }
@@ -291,13 +411,33 @@ const Menu = (() => {
     wl(b.bottom());
     wl(b.shadowFloor());
     Terminal.writeLine('');
-    Terminal.writeLine([PAD, s('[E] Back to Engineering   ', C.C), s('[M] Main Menu', C.C)]);
+
+    // Navigation: prev/next within project
+    const allPosts = project ? await Blog.fetchPostsByProject(project.slug) : [];
+    const curIdx = allPosts.findIndex(p => p.slug === post.slug);
+    const hasPrev = curIdx > 0;
+    const hasNext = curIdx >= 0 && curIdx < allPosts.length - 1;
+
+    const opts = [];
+    if (hasPrev) opts.push(s('[P] Prev Post   ', C.C));
+    if (hasNext) opts.push(s('[N] Next Post   ', C.C));
+    if (repoUrl) opts.push(s('[R] View Repo   ', C.C));
+    Terminal.writeLine([PAD, ...opts]);
+
+    const opts2 = [];
+    if (project) opts2.push(s('[B] Back to Project   ', C.C));
+    opts2.push(s('[E] Engineering   ', C.C), s('[M] Main Menu', C.C));
+    Terminal.writeLine([PAD, ...opts2]);
     Terminal.writeLine([PAD, s('Select: ', C.G), s('_', C.W)]);
     Terminal.showCursor();
 
     setHandler((e) => {
       const key = e.key.toUpperCase();
-      if      (key === 'E') { removeHandler(); showProjects(); }
+      if      (key === 'R' && repoUrl) window.open(repoUrl, '_blank');
+      else if (key === 'P' && hasPrev) { removeHandler(); showPost(allPosts[curIdx - 1], project); }
+      else if (key === 'N' && hasNext) { removeHandler(); showPost(allPosts[curIdx + 1], project); }
+      else if (key === 'B' && project) { removeHandler(); showProjectPosts(project); }
+      else if (key === 'E') { removeHandler(); showProjects(); }
       else if (key === 'M') { removeHandler(); showMainMenu(); }
     });
   }

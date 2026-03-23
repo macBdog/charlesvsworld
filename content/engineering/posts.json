@@ -1,8 +1,1032 @@
 [
   {
-    "slug": "burn-test-robot",
-    "title": "Burn Test Robot",
-    "date": "2024-06-15",
-    "summary": "Arduino-powered robot that repeatedly applies a soldering iron to samples for timed burn testing."
+    "slug": "1979-porsche-924-turbo/924-from-project-to-past-time",
+    "title": "924 from project to past-time",
+    "date": "2021-10-26",
+    "summary": "It may come as a great surprise to see the 924 race car project move into the twilight of all project cars: doing what i...",
+    "tags": [
+      "1979-porsche-924-turbo"
+    ],
+    "project": "1979-porsche-924-turbo"
+  },
+  {
+    "slug": "wedding/zoe-charles-wedding",
+    "title": "Zoe + Charles Wedding",
+    "date": "2021-10-25",
+    "summary": "[Click here for the photo gallery](http://charles.henden.com.au/node/162) and [here to see the video](https://youtu.be/I...",
+    "tags": [
+      "wedding"
+    ],
+    "project": "wedding"
+  },
+  {
+    "slug": "gaming/the-lost-monster-v0-2",
+    "title": "THE LOST MONSTER v0.2",
+    "date": "2016-11-12",
+    "summary": "Nick and I have made an update to the game we are making. This time, Nick did some JavaScript, edited collision for the...",
+    "tags": [
+      "gaming"
+    ],
+    "project": "gaming"
+  },
+  {
+    "slug": "1979-porsche-924-turbo/donk-out",
+    "title": "Donk out",
+    "date": "2016-07-19",
+    "summary": "Nothing like sitting down on a stool and servicing an engine that's on the stand",
+    "tags": [
+      "1979-porsche-924-turbo"
+    ],
+    "project": "1979-porsche-924-turbo"
+  },
+  {
+    "slug": "workshop/workshop-open-for-business",
+    "title": "Workshop open for business",
+    "date": "2016-06-17",
+    "summary": "I'm a happy little boy because the dream of the last 5 years is reality - workshop with a car in it.",
+    "tags": [
+      "workshop"
+    ],
+    "project": "workshop"
+  },
+  {
+    "slug": "workshop/shop-organiser",
+    "title": "Shop Organiser",
+    "date": "2016-05-24",
+    "summary": "Picked up some really cheap parts storage bins a few weeks ago then knocked this organiser up from scrap:",
+    "tags": [
+      "workshop"
+    ],
+    "project": "workshop"
+  },
+  {
+    "slug": "gaming/nick-and-charles-make-a-game-part-1",
+    "title": "Nick and Charles make a game part 1",
+    "date": "2016-05-12",
+    "summary": "My 7-year old nephew Nick and I had our first game making session last week and we've started on THE LOST MONSTER.",
+    "tags": [
+      "gaming"
+    ],
+    "project": "gaming"
+  },
+  {
+    "slug": "australia/ebisu-drift-grand-prix-2015",
+    "title": "Ebisu Drift Grand Prix 2015",
+    "date": "2016-04-19",
+    "summary": "One of the highlights of last year's Japan trip was seeing the country's national motorsport live in Ebisu, Fukushima....",
+    "tags": [
+      "australia"
+    ],
+    "project": "australia"
+  },
+  {
+    "slug": "australia/jaguar-club-60th-lakeside",
+    "title": "Jaguar Club 60th @ Lakeside",
+    "date": "2016-04-19",
+    "summary": "Got the big V12 out on the most dangerous track in Australia for a blast of regularity on the weekend.",
+    "tags": [
+      "australia"
+    ],
+    "project": "australia"
+  },
+  {
+    "slug": "gaming/global-game-jam-2015",
+    "title": "Global Game Jam 2015",
+    "date": "2015-01-26",
+    "summary": "Last weekend was spent with very little sleep, cramming the full production cycle of a game into 48 hours.",
+    "tags": [
+      "gaming"
+    ],
+    "project": "gaming"
+  },
+  {
+    "slug": "australia/point-cook-airshow",
+    "title": "Point Cook Airshow",
+    "date": "2014-04-05",
+    "summary": "Snapped some pictures of some warbirds at Point Cook. Click for gallery,",
+    "tags": [
+      "australia"
+    ],
+    "project": "australia"
+  },
+  {
+    "slug": "australia/melbourne-f1gp-2014",
+    "title": "Melbourne F1GP 2014",
+    "date": "2014-04-05",
+    "summary": "A great start to a weird season, I'm gutted for Ricciardo as he drove well. Hard to get any decent pics through all the...",
+    "tags": [
+      "australia"
+    ],
+    "project": "australia"
+  },
+  {
+    "slug": "australia/cricket-shipped-i-got-cake",
+    "title": "Cricket Shipped, I got cake.",
+    "date": "2014-04-05",
+    "summary": "The leading SKUs for Don Bradman Cricket 2014 have finally hit stores.",
+    "tags": [
+      "australia"
+    ],
+    "project": "australia"
+  },
+  {
+    "slug": "road-trip-2013/road-trip-7-philly-brooklyn",
+    "title": "Road Trip 7 - Philly & Brooklyn",
+    "date": "2013-08-29",
+    "summary": "Five thousand miles of driving has put us to rest in Brooklyn, New York. On the way we checked out the city of brotherly...",
+    "tags": [
+      "road-trip-2013"
+    ],
+    "project": "road-trip-2013"
+  },
+  {
+    "slug": "road-trip-2013/road-trip-finale-new-york-city",
+    "title": "Road Trip Finale! New York City.",
+    "date": "2013-08-29",
+    "summary": "",
+    "tags": [
+      "road-trip-2013"
+    ],
+    "project": "road-trip-2013"
+  },
+  {
+    "slug": "road-trip-2013/road-trip-6-virginia-dc",
+    "title": "Road Trip 6 - Virginia & DC",
+    "date": "2013-08-24",
+    "summary": "Had the last camp of the trip in Virginia at the Natural Bridge then went to check out Uncle Barry's house.",
+    "tags": [
+      "road-trip-2013"
+    ],
+    "project": "road-trip-2013"
+  },
+  {
+    "slug": "road-trip-2013/road-trip-5-memphis-nashville",
+    "title": "Road Trip 5 - Memphis & Nashville",
+    "date": "2013-08-19",
+    "summary": "Our journey through the middle is almost over but not before a horse ride and a visit to the heart of soul music - Stax...",
+    "tags": [
+      "road-trip-2013"
+    ],
+    "project": "road-trip-2013"
+  },
+  {
+    "slug": "road-trip-2013/road-trip-4-new-orleans",
+    "title": "Road Trip 4 - New Orleans",
+    "date": "2013-08-16",
+    "summary": "NOLA has been the hardest city to leave so far. Such a unique combination of music, food and history. WHO DAT!",
+    "tags": [
+      "road-trip-2013"
+    ],
+    "project": "road-trip-2013"
+  },
+  {
+    "slug": "road-trip-2013/road-trip-3-caverns-and-deserts",
+    "title": "Road Trip 3 - Caverns and Deserts",
+    "date": "2013-08-11",
+    "summary": "Covered some amazing national parks in the last few days. I'm Batman.",
+    "tags": [
+      "road-trip-2013"
+    ],
+    "project": "road-trip-2013"
+  },
+  {
+    "slug": "road-trip-2013/road-trip-2-vegas-and-grand-canyon",
+    "title": "Road Trip 2 - Vegas and Grand Canyon",
+    "date": "2013-08-10",
+    "summary": "Las Vegas treated us well, we came out with an even balance with no thanks to \"Koala Mint\". Needless to say I found some...",
+    "tags": [
+      "road-trip-2013"
+    ],
+    "project": "road-trip-2013"
+  },
+  {
+    "slug": "road-trip-2013/road-trip-1-yosemite-valley",
+    "title": "Road Trip 1 - Yosemite Valley",
+    "date": "2013-08-06",
+    "summary": "Had an amazing time camping and hiking in and around Yosemite National Park. No bears spotted sadly.",
+    "tags": [
+      "road-trip-2013"
+    ],
+    "project": "road-trip-2013"
+  },
+  {
+    "slug": "san-francisco/met-a-legend",
+    "title": "Met a legend",
+    "date": "2013-06-24",
+    "summary": "I went to a John Scofield Band show last night as part of SF Jazz fest and was lucky enough to meet John and have my axe...",
+    "tags": [
+      "san-francisco"
+    ],
+    "project": "san-francisco"
+  },
+  {
+    "slug": "misc/car-heaven",
+    "title": "Car heaven",
+    "date": "2013-05-22",
+    "summary": "Last weekend I caught the Sonoma Historic Motorsports Festival, the highlights for me were seeing a 917K in the flesh an...",
+    "tags": [
+      "misc"
+    ],
+    "project": "misc"
+  },
+  {
+    "slug": "australia/australia-fishing-drag-racing",
+    "title": "Australia = fishing, drag racing.",
+    "date": "2013-04-24",
+    "summary": "When did I become such a bogan? Went fishing and to the drags in the last couple of weeks.",
+    "tags": [
+      "australia"
+    ],
+    "project": "australia"
+  },
+  {
+    "slug": "1979-porsche-924-turbo/because-racecar",
+    "title": "Because Racecar",
+    "date": "2013-04-23",
+    "summary": "Started fitment of the factor Porsche 924 Carerra GTS kit. Another step on the road to getting my car on a racetrack, cl...",
+    "tags": [
+      "1979-porsche-924-turbo"
+    ],
+    "project": "1979-porsche-924-turbo"
+  },
+  {
+    "slug": "san-francisco/its-disneyland",
+    "title": "It's Disneyland",
+    "date": "2012-12-03",
+    "summary": "Had a great time at the cult of Disneyland last week, click the photo to see some big kids and a small one.'",
+    "tags": [
+      "san-francisco"
+    ],
+    "project": "san-francisco"
+  },
+  {
+    "slug": "1979-porsche-924-turbo/924-update",
+    "title": "924 Update",
+    "date": "2012-10-19",
+    "summary": "In lieu of being able to work on my stupid car I made a video of it instead.",
+    "tags": [
+      "1979-porsche-924-turbo"
+    ],
+    "project": "1979-porsche-924-turbo"
+  },
+  {
+    "slug": "gaming/fix-all-the-bugs-in-teh-gaems",
+    "title": "FIX ALL THE BUGS IN TEH GAEMS",
+    "date": "2012-09-24",
+    "summary": "There has been a distinct lack of extra curricular activities in my life recently thanks to 80 hour weeks bugfixing. Hop...",
+    "tags": [
+      "gaming"
+    ],
+    "project": "gaming"
+  },
+  {
+    "slug": "san-francisco/back-from-the-future",
+    "title": "Back from the Future",
+    "date": "2012-06-12",
+    "summary": "I just got back from attending my first E3 convention. Heaps of people at work told me that it wasn't all that exciting...",
+    "tags": [
+      "san-francisco"
+    ],
+    "project": "san-francisco"
+  },
+  {
+    "slug": "san-francisco/sonoma-historics",
+    "title": "Sonoma Historics",
+    "date": "2012-06-05",
+    "summary": "I was in revhead heaven this weekend with the Sonoma Historic Motorsport Festival at Infineon. Despite being one of the...",
+    "tags": [
+      "san-francisco"
+    ],
+    "project": "san-francisco"
+  },
+  {
+    "slug": "san-francisco/owning-fools",
+    "title": "Owning Fools",
+    "date": "2012-04-26",
+    "summary": "We had a press event for the game last week and it was heaps of fun to go. I did a shaky on camera interview with Destru...",
+    "tags": [
+      "san-francisco"
+    ],
+    "project": "san-francisco"
+  },
+  {
+    "slug": "san-francisco/for-your-wine-country",
+    "title": "For Your Wine Country",
+    "date": "2012-04-16",
+    "summary": "[](http://charles.henden.com.au/node/100)",
+    "tags": [
+      "san-francisco"
+    ],
+    "project": "san-francisco"
+  },
+  {
+    "slug": "san-francisco/me-me-at-gdc",
+    "title": "Me, me at GDC",
+    "date": "2012-03-10",
+    "summary": "[](http://charles.henden.com.au/node/98)",
+    "tags": [
+      "san-francisco"
+    ],
+    "project": "san-francisco"
+  },
+  {
+    "slug": "san-francisco/worked-on-a-delorean",
+    "title": "Worked on a Delorean",
+    "date": "2012-02-07",
+    "summary": "I got around to servicing the Muzza last weekend and what should be parked in a the back of a nearby garage? A genuine D...",
+    "tags": [
+      "san-francisco"
+    ],
+    "project": "san-francisco"
+  },
+  {
+    "slug": "san-francisco/ny-in-la-ok",
+    "title": "NY in LA OK",
+    "date": "2012-01-04",
+    "summary": "I snapped a few pics from the whirlwind LA trip. The Pacific Coast Highway is AMAZING driving. Especially when you blast...",
+    "tags": [
+      "san-francisco"
+    ],
+    "project": "san-francisco"
+  },
+  {
+    "slug": "san-francisco/its-super-effective",
+    "title": "ITS SUPER EFFECTIVE",
+    "date": "2011-12-29",
+    "summary": "Got some semi decent pics of the new beast, its a 2007 GT birdshit magnet model. Seriously, 5 seconds after I wash it th...",
+    "tags": [
+      "san-francisco"
+    ],
+    "project": "san-francisco"
+  },
+  {
+    "slug": "san-francisco/praise-be-to-steve",
+    "title": "Praise be to Steve",
+    "date": "2011-12-22",
+    "summary": "I've got around to doing some decoration in the apartment recently. Here is my homage to Steve McQueen done with Rasterb...",
+    "tags": [
+      "san-francisco"
+    ],
+    "project": "san-francisco"
+  },
+  {
+    "slug": "san-francisco/ice-skating-and-epic-stache",
+    "title": "Ice skating and epic stache",
+    "date": "2011-12-09",
+    "summary": "I went to the Christmas ice rink at Union square last weekend for a very American movie like experience and check out th...",
+    "tags": [
+      "san-francisco"
+    ],
+    "project": "san-francisco"
+  },
+  {
+    "slug": "san-francisco/come-for-a-skate",
+    "title": "Come for a skate",
+    "date": "2011-12-06",
+    "summary": "Took this little video during my lunch break the other day,",
+    "tags": [
+      "san-francisco"
+    ],
+    "project": "san-francisco"
+  },
+  {
+    "slug": "san-francisco/sf-auto-show",
+    "title": "SF Auto Show",
+    "date": "2011-12-01",
+    "summary": "I checked out the local auto show on the weekend which by US standards was pretty lax but still fun nonetheless. Most pe...",
+    "tags": [
+      "san-francisco"
+    ],
+    "project": "san-francisco"
+  },
+  {
+    "slug": "san-francisco/curry-in-front-of-the-tv",
+    "title": "Curry in front of the TV",
+    "date": "2011-11-27",
+    "summary": "I have a nice big couch for the apartment now so its officially open season for visitors to stay over.",
+    "tags": [
+      "san-francisco"
+    ],
+    "project": "san-francisco"
+  },
+  {
+    "slug": "san-francisco/they-might-be-giants-footy",
+    "title": "They Might Be Giants footy",
+    "date": "2011-11-18",
+    "summary": "I've just uploaded the Alphabet of Nations from the free TMBG show I caught last Sunday.",
+    "tags": [
+      "san-francisco"
+    ],
+    "project": "san-francisco"
+  },
+  {
+    "slug": "san-francisco/i-gotta-new-apartment-bay-bee",
+    "title": "I gotta new apartment bay-bee",
+    "date": "2011-11-16",
+    "summary": "Woot! So I'm in my new apartment, there is a fireplace and the only furniture I have is a mattress which is lucky cos yo...",
+    "tags": [
+      "san-francisco"
+    ],
+    "project": "san-francisco"
+  },
+  {
+    "slug": "san-francisco/hey-square-eyes-get-some-dank-nuggets",
+    "title": "\"Hey square eyes, get some dank nuggets\"",
+    "date": "2011-11-14",
+    "summary": "So I spent the weekend in and out of the Haight where I saw a They Might Be Giants show at Amoeba, went to two parties a...",
+    "tags": [
+      "san-francisco"
+    ],
+    "project": "san-francisco"
+  },
+  {
+    "slug": "san-francisco/a-wild-mustang-appears",
+    "title": "A wild mustang appears",
+    "date": "2011-11-13",
+    "summary": "It's not mine yet but I think I may have found a car over here. 2007 Mustang, V8 GT Premium with 33k miles. Should do th...",
+    "tags": [
+      "san-francisco"
+    ],
+    "project": "san-francisco"
+  },
+  {
+    "slug": "san-francisco/first-day-of-work-celebratory-in-n-out-burger",
+    "title": "First day of work celebratory in-n-out burger",
+    "date": "2011-11-08",
+    "summary": "Yes it was as good as it looks.",
+    "tags": [
+      "san-francisco"
+    ],
+    "project": "san-francisco"
+  },
+  {
+    "slug": "san-francisco/sf-day-one",
+    "title": "SF Day one",
+    "date": "2011-11-06",
+    "summary": "So as of an hour ago, I've been in [San Fran for 24 hours](http://charles.henden.com.au/node/76) and it's been pretty mu...",
+    "tags": [
+      "san-francisco"
+    ],
+    "project": "san-francisco"
+  },
+  {
+    "slug": "san-francisco/taipei-layover",
+    "title": "Taipei Layover",
+    "date": "2011-11-04",
+    "summary": "I've had an awesome day in Taipei today, started a bit too scurvy for my liking with my arrival at 5:30am local time. I...",
+    "tags": [
+      "san-francisco"
+    ],
+    "project": "san-francisco"
+  },
+  {
+    "slug": "san-francisco/nick-and-i-at-the-park",
+    "title": "Nick and I at the park",
+    "date": "2011-11-03",
+    "summary": "I think I make a pretty good koala.",
+    "tags": [
+      "san-francisco"
+    ],
+    "project": "san-francisco"
+  },
+  {
+    "slug": "san-francisco/new-life-new-blog",
+    "title": "New Life, New Blog",
+    "date": "2011-10-31",
+    "summary": "So I'm pretty much done rebuilding my blog for the trip to come. Stay tuned as it will be bustling with SF news in about...",
+    "tags": [
+      "san-francisco"
+    ],
+    "project": "san-francisco"
+  },
+  {
+    "slug": "australia/cursive-es",
+    "title": "Cursive Es",
+    "date": "2011-08-29",
+    "summary": "I've been trying out a tip I read online recently to trace little cursive E's when pulling a weld puddle - works pretty...",
+    "tags": [
+      "australia"
+    ],
+    "project": "australia"
+  },
+  {
+    "slug": "australia/goodbye-thq-studio-and-oz",
+    "title": "Goodbye THQ Studio and Oz",
+    "date": "2011-08-29",
+    "summary": "Well my employer THQ Studio Oz has shutdown and I'm planning to head off overseas. Where to? Maybe Montreal, San Fransis...",
+    "tags": [
+      "australia"
+    ],
+    "project": "australia"
+  },
+  {
+    "slug": "1979-porsche-924-turbo/rebuilt-driveshafts",
+    "title": "Rebuilt driveshafts",
+    "date": "2011-07-19",
+    "summary": "Rebuilt the rear CVs and driveshafts after getting sick of looking at worn boots every time I got under the gearbox. I g...",
+    "tags": [
+      "1979-porsche-924-turbo"
+    ],
+    "project": "1979-porsche-924-turbo"
+  },
+  {
+    "slug": "1979-porsche-924-turbo/car-schwag",
+    "title": "Car schwag",
+    "date": "2011-06-21",
+    "summary": "Got my pipes back from being being ceramic coated at Competition Coatings and they look awesome. New clutch gear arrived...",
+    "tags": [
+      "1979-porsche-924-turbo"
+    ],
+    "project": "1979-porsche-924-turbo"
+  },
+  {
+    "slug": "1979-porsche-924-turbo/rear-suspension-rebuild",
+    "title": "Rear suspension rebuild",
+    "date": "2011-06-19",
+    "summary": "What started as a \"I'll fix that rust spot on the right rear trailing arm while the suspension is dropped\" turned into a...",
+    "tags": [
+      "1979-porsche-924-turbo"
+    ],
+    "project": "1979-porsche-924-turbo"
+  },
+  {
+    "slug": "australia/the-first-and-last-time-ill-be-in-a-fashion-magazine",
+    "title": "The first and last time I'll be in a fashion magazine",
+    "date": "2011-06-02",
+    "summary": "June edition of MAP magazine. It's a magazine about people who buy a porsche then spend all their time working on it ins...",
+    "tags": [
+      "australia"
+    ],
+    "project": "australia"
+  },
+  {
+    "slug": "1979-porsche-924-turbo/throwout-bearing-failure",
+    "title": "Throwout bearing failure",
+    "date": "2011-05-14",
+    "summary": "So I finally got around to pulling the 924 apart to check out the condition of the throwout bearing. Turns out it totall...",
+    "tags": [
+      "1979-porsche-924-turbo"
+    ],
+    "project": "1979-porsche-924-turbo"
+  },
+  {
+    "slug": "gaming/sim-racing-cockpit",
+    "title": "Sim racing cockpit",
+    "date": "2010-10-23",
+    "summary": "Knocked this up over the last few weekends in readyness for THE GREATEST CAR GAME OF ALL TIME, Gran Turismo 5.",
+    "tags": [
+      "gaming"
+    ],
+    "project": "gaming"
+  },
+  {
+    "slug": "workshop/i-made-a-welding-trolley-with-flames",
+    "title": "I made a welding trolley. With Flames.",
+    "date": "2010-07-14",
+    "summary": "Yup. It's got flames.",
+    "tags": [
+      "workshop"
+    ],
+    "project": "workshop"
+  },
+  {
+    "slug": "off-road-device/off-road-device-design-progress",
+    "title": "Off road device design progress",
+    "date": "2010-06-27",
+    "summary": "I mirrored the off road device design for the first time... looks like TOO much triangulation. Will have to work out how...",
+    "tags": [
+      "off-road-device"
+    ],
+    "project": "off-road-device"
+  },
+  {
+    "slug": "workshop/sbc-heater-flange-plate",
+    "title": "SBC heater flange plate",
+    "date": "2010-06-22",
+    "summary": "I made this part for the left hand coolant channel on a GM SBC that has the heater return right under the left hand wate...",
+    "tags": [
+      "workshop"
+    ],
+    "project": "workshop"
+  },
+  {
+    "slug": "gaming/people-at-e3-playing-a-game-i-worked-on",
+    "title": "People at E3 playing a game I worked on",
+    "date": "2010-06-17",
+    "summary": "It&#39;s a first for me. Stoked.",
+    "tags": [
+      "gaming"
+    ],
+    "project": "gaming"
+  },
+  {
+    "slug": "off-road-device/off-road-device",
+    "title": "Off road device",
+    "date": "2010-06-14",
+    "summary": "So I'm pretty keen to build a racecar (probably an R1 powered [locost](http://www.locostbuilders.co.uk)) but before I ju...",
+    "tags": [
+      "off-road-device"
+    ],
+    "project": "off-road-device"
+  },
+  {
+    "slug": "gaming/one-for-the-coders",
+    "title": "One for the coders",
+    "date": "2009-09-14",
+    "summary": "How could you not snigger writing this method:",
+    "tags": [
+      "gaming"
+    ],
+    "project": "gaming"
+  },
+  {
+    "slug": "cnc-table/doing-the-doohicky",
+    "title": "Doing the Doohicky",
+    "date": "2009-07-06",
+    "summary": "In order to get the KLR 650 up to a bullet-proof, simpson desert crossing (hah!) level of reliability, one of the things...",
+    "tags": [
+      "cnc-table"
+    ],
+    "project": "cnc-table"
+  },
+  {
+    "slug": "924-v8-racecar/fed-up",
+    "title": "Fed Up!",
+    "date": "2008-08-23",
+    "summary": "The intricacies of extracting power from the stock audi donk have finally got the better of me and I'm moving in an enti...",
+    "tags": [
+      "924-v8-racecar"
+    ],
+    "project": "924-v8-racecar"
+  },
+  {
+    "slug": "1979-porsche-924-turbo/junk-in-the-trunk",
+    "title": "Junk in the trunk",
+    "date": "2007-12-23",
+    "summary": "I was pretty happy with the last set of speakers I built for my sister and her husband but I made some last minute chang...",
+    "tags": [
+      "1979-porsche-924-turbo"
+    ],
+    "project": "1979-porsche-924-turbo"
+  },
+  {
+    "slug": "1979-porsche-924-turbo/fuel-rail-complete",
+    "title": "Fuel rail complete",
+    "date": "2007-06-25",
+    "summary": "The engine bay is just about finished now with the fuel situation sorted. The sard adjustable FPR works nicely and I fin...",
+    "tags": [
+      "1979-porsche-924-turbo"
+    ],
+    "project": "1979-porsche-924-turbo"
+  },
+  {
+    "slug": "1979-porsche-924-turbo/back-on-the-road",
+    "title": "Back on the road",
+    "date": "2007-06-15",
+    "summary": "Well I&#39;ve sorted out the noise in the tach signal and started the arduous (but fun) process of tuning. It&#39;s all...",
+    "tags": [
+      "1979-porsche-924-turbo"
+    ],
+    "project": "1979-porsche-924-turbo"
+  },
+  {
+    "slug": "1979-porsche-924-turbo/megasquirtin",
+    "title": "Megasquirtin",
+    "date": "2007-06-04",
+    "summary": "I finished building the [MegaSquirt ECU](http://megasquirt.info) last night. I went with a V2.2 board for MS1. The other...",
+    "tags": [
+      "1979-porsche-924-turbo"
+    ],
+    "project": "1979-porsche-924-turbo"
+  },
+  {
+    "slug": "1979-porsche-924-turbo/porsche-956-in-the-flesh",
+    "title": "Porsche 956 in the flesh",
+    "date": "2007-05-14",
+    "summary": "Went and had a look at a Porsche 956 being race prepped by Wayne Park auto @ Milton. I spoke to the mechanic who was dis...",
+    "tags": [
+      "1979-porsche-924-turbo"
+    ],
+    "project": "1979-porsche-924-turbo"
+  },
+  {
+    "slug": "1979-porsche-924-turbo/intake-and-exhaust",
+    "title": "Intake and exhaust",
+    "date": "2007-05-06",
+    "summary": "Got the exhaust and most of the intake sorted on the car this (long) weekend. Looks like another day of hard work to get...",
+    "tags": [
+      "1979-porsche-924-turbo"
+    ],
+    "project": "1979-porsche-924-turbo"
+  },
+  {
+    "slug": "1979-porsche-924-turbo/911-brake-rebuild",
+    "title": "911 brake rebuild",
+    "date": "2007-04-24",
+    "summary": "Just about finished the brake rebuild on the 911. Of particular difficulty to acquire were the channel seals that go in...",
+    "tags": [
+      "1979-porsche-924-turbo"
+    ],
+    "project": "1979-porsche-924-turbo"
+  },
+  {
+    "slug": "gaming/jumpworks-gui-backdrop",
+    "title": "Jumpworks GUI backdrop",
+    "date": "2007-04-22",
+    "summary": "Anyone who played Stunts wil recognise the opponent screen background. On the left is the original artwork, on the right...",
+    "tags": [
+      "gaming"
+    ],
+    "project": "gaming"
+  },
+  {
+    "slug": "1979-porsche-924-turbo/new-seats-for-the-924",
+    "title": "New seats for the 924",
+    "date": "2007-04-09",
+    "summary": "I've just finished installing brand spanking [Sparco Sprint](http://www.sparcousa.com/pseats_comp.asp?id=176) seats in t...",
+    "tags": [
+      "1979-porsche-924-turbo"
+    ],
+    "project": "1979-porsche-924-turbo"
+  },
+  {
+    "slug": "1979-porsche-924-turbo/911-ecu-mounts",
+    "title": "911 ECU mounts",
+    "date": "2007-04-08",
+    "summary": "Progress on the 911 has been slow but constant. The biggest piece of work this weekend was mounting the ECUs up in the p...",
+    "tags": [
+      "1979-porsche-924-turbo"
+    ],
+    "project": "1979-porsche-924-turbo"
+  },
+  {
+    "slug": "1979-porsche-924-turbo/pulling-or-pushing",
+    "title": "Pulling or Pushing?",
+    "date": "2007-04-07",
+    "summary": "So I was making some brackets for the new seats in the 924 and decided to experiment with my gas MIG welding technique a...",
+    "tags": [
+      "1979-porsche-924-turbo"
+    ],
+    "project": "1979-porsche-924-turbo"
+  },
+  {
+    "slug": "gaming/real-guitar-hero-controller",
+    "title": "Real \"Guitar Hero\" controller.",
+    "date": "2007-02-14",
+    "summary": "Got a mates wedding coming up, and he and his missus love guitar hero 2 so I decided to build them a present. Its a chin...",
+    "tags": [
+      "gaming"
+    ],
+    "project": "gaming"
+  },
+  {
+    "slug": "1979-porsche-924-turbo/turbo-manifold-progress",
+    "title": "Turbo manifold progress",
+    "date": "2006-12-31",
+    "summary": "Turbo manifold is complete. Heres a shot of the ports smoothed out with a die grinder",
+    "tags": [
+      "1979-porsche-924-turbo"
+    ],
+    "project": "1979-porsche-924-turbo"
+  },
+  {
+    "slug": "speakers/full-range-floorstanders",
+    "title": "Full range floorstanders",
+    "date": "2006-12-30",
+    "summary": "I built a few sets of home theatre speakers. The first set were an experiment and they turned out so good that I just ke...",
+    "tags": [
+      "speakers"
+    ],
+    "project": "speakers"
+  },
+  {
+    "slug": "1979-porsche-924-turbo/fuel-rail-round-1",
+    "title": "Fuel rail round 1",
+    "date": "2006-12-08",
+    "summary": "I built this fuel rail according to the [Simple Digital Systems](http://sdsefi.com/) guide. The rail is governed by a SA...",
+    "tags": [
+      "1979-porsche-924-turbo"
+    ],
+    "project": "1979-porsche-924-turbo"
+  },
+  {
+    "slug": "1979-porsche-924-turbo/garrett-manifold-experiments",
+    "title": "Garrett manifold experiments",
+    "date": "2006-12-05",
+    "summary": "Exhaust manifold is coming along after much experimenting with toilet rolls:",
+    "tags": [
+      "1979-porsche-924-turbo"
+    ],
+    "project": "1979-porsche-924-turbo"
+  },
+  {
+    "slug": "1979-porsche-924-turbo/the-more-power-disease",
+    "title": "The MORE POWER disease",
+    "date": "2006-10-19",
+    "summary": "Ok so the next big round of work for the car is to delete the CIS fuel injection and replace it with a modern EFI system...",
+    "tags": [
+      "1979-porsche-924-turbo"
+    ],
+    "project": "1979-porsche-924-turbo"
+  },
+  {
+    "slug": "1979-porsche-924-turbo/what-abargain",
+    "title": "What a\"bargain\"",
+    "date": "2006-08-29",
+    "summary": "Dad spotted a cheap 1973 911E on the net. Only problem was the car was located in Hervey Bay - about 4 hours drive from...",
+    "tags": [
+      "1979-porsche-924-turbo"
+    ],
+    "project": "1979-porsche-924-turbo"
+  },
+  {
+    "slug": "workshop/fence-plans",
+    "title": "Fence plans",
+    "date": "2006-07-30",
+    "summary": "Ive decided to change the front fence of my house to give the property a mor modern look from the outside. The plans inc...",
+    "tags": [
+      "workshop"
+    ],
+    "project": "workshop"
+  },
+  {
+    "slug": "1979-porsche-924-turbo/progress-on-the-road-to-new-turbo",
+    "title": "Progress on the road to new turbo",
+    "date": "2006-07-19",
+    "summary": "Making good progress lately. The current plan of \"engine out, new turbo, engine in\" has changed to \"engine out, everythi...",
+    "tags": [
+      "1979-porsche-924-turbo"
+    ],
+    "project": "1979-porsche-924-turbo"
+  },
+  {
+    "slug": "1979-porsche-924-turbo/centre-console",
+    "title": "Centre console",
+    "date": "2006-04-08",
+    "summary": "One of the problems with the car is there is nowhere conveniant to put your wallet or mobile when driving.  The standard...",
+    "tags": [
+      "1979-porsche-924-turbo"
+    ],
+    "project": "1979-porsche-924-turbo"
+  },
+  {
+    "slug": "1979-porsche-924-turbo/interior-work-round-1",
+    "title": "Interior work round 1",
+    "date": "2006-04-07",
+    "summary": "Started fixing up the interior, the door cards were the first to go:",
+    "tags": [
+      "1979-porsche-924-turbo"
+    ],
+    "project": "1979-porsche-924-turbo"
+  },
+  {
+    "slug": "1979-porsche-924-turbo/headwork-done",
+    "title": "Headwork done",
+    "date": "2006-04-05",
+    "summary": "Lots of work has been going on over the weekend. The head came back and is back on the car, and the engine is ready to g...",
+    "tags": [
+      "1979-porsche-924-turbo"
+    ],
+    "project": "1979-porsche-924-turbo"
+  },
+  {
+    "slug": "1979-porsche-924-turbo/next-round-of-work",
+    "title": "Next round of work",
+    "date": "2006-03-18",
+    "summary": "Woo heaps happening lately. The head is off to be cleaned, new valve stems and seals, valves lapped, intake porting and...",
+    "tags": [
+      "1979-porsche-924-turbo"
+    ],
+    "project": "1979-porsche-924-turbo"
+  },
+  {
+    "slug": "1979-porsche-924-turbo/back-on-the-road",
+    "title": "Back on the road",
+    "date": "2005-12-03",
+    "summary": "ITS RUNNING!",
+    "tags": [
+      "1979-porsche-924-turbo"
+    ],
+    "project": "1979-porsche-924-turbo"
+  },
+  {
+    "slug": "1979-porsche-924-turbo/engine-in-car",
+    "title": "Engine in car",
+    "date": "2005-10-30",
+    "summary": "Looking to turn it over in a few days.. just gotta put the exhaust and cooling systems back on, do some wiring for the i...",
+    "tags": [
+      "1979-porsche-924-turbo"
+    ],
+    "project": "1979-porsche-924-turbo"
+  },
+  {
+    "slug": "1979-porsche-924-turbo/headlights-finito",
+    "title": "Headlights finito",
+    "date": "2005-10-23",
+    "summary": "Well massive props to option1garage.com.au because they refunded my money in full for the busted turbo. Which in any nor...",
+    "tags": [
+      "1979-porsche-924-turbo"
+    ],
+    "project": "1979-porsche-924-turbo"
+  },
+  {
+    "slug": "1979-porsche-924-turbo/fixed-headlight-conversion",
+    "title": "Fixed headlight conversion",
+    "date": "2005-10-13",
+    "summary": "Filling in time while im waiting for my turbo to be rebuilt, decided to finish off the fixed headlight job. Lenses which...",
+    "tags": [
+      "1979-porsche-924-turbo"
+    ],
+    "project": "1979-porsche-924-turbo"
+  },
+  {
+    "slug": "1979-porsche-924-turbo/go-gadget-smokescreen",
+    "title": "Go  gadget smokescreen",
+    "date": "2005-10-07",
+    "summary": "F#cking hell I have converted my car into a crop duster.",
+    "tags": [
+      "1979-porsche-924-turbo"
+    ],
+    "project": "1979-porsche-924-turbo"
+  },
+  {
+    "slug": "1979-porsche-924-turbo/up-and-running",
+    "title": "Up and running",
+    "date": "2005-10-03",
+    "summary": "Woohoo! Idled and ran smoothly @ 2am last night.",
+    "tags": [
+      "1979-porsche-924-turbo"
+    ],
+    "project": "1979-porsche-924-turbo"
+  },
+  {
+    "slug": "1979-porsche-924-turbo/we-have-boost",
+    "title": "We have boost",
+    "date": "2005-09-16",
+    "summary": "Turbo and manifold is back on the engine, everything cemented, re-gasketed and torqued up ready to roll.",
+    "tags": [
+      "1979-porsche-924-turbo"
+    ],
+    "project": "1979-porsche-924-turbo"
+  },
+  {
+    "slug": "1979-porsche-924-turbo/new-turbo-acquired",
+    "title": "New turbo acquired",
+    "date": "2005-07-10",
+    "summary": "Just bought a brand new KKK26 from Option1Garage.com.au, checkit out:",
+    "tags": [
+      "1979-porsche-924-turbo"
+    ],
+    "project": "1979-porsche-924-turbo"
+  },
+  {
+    "slug": "1979-porsche-924-turbo/major-progress-motor-out",
+    "title": "Major progress - motor out!",
+    "date": "2005-07-09",
+    "summary": "Woot! Engine is out and work has begun. Shortlist of work thats happening while the donk is out:",
+    "tags": [
+      "1979-porsche-924-turbo"
+    ],
+    "project": "1979-porsche-924-turbo"
+  },
+  {
+    "slug": "1979-porsche-924-turbo/chilling-vision-of-things-to-come",
+    "title": "Chilling vision of things to come.",
+    "date": "2005-06-23",
+    "summary": "Today I started preparing the engine for removal and cleaned out the rusty area where the battery",
+    "tags": [
+      "1979-porsche-924-turbo"
+    ],
+    "project": "1979-porsche-924-turbo"
+  },
+  {
+    "slug": "1979-porsche-924-turbo/brake-upgrade-for-the-924",
+    "title": "Brake upgrade for the 924",
+    "date": "2005-05-30",
+    "summary": "Time for a complete overhaul of the 924 braking system.",
+    "tags": [
+      "1979-porsche-924-turbo"
+    ],
+    "project": "1979-porsche-924-turbo"
+  },
+  {
+    "slug": "1979-porsche-924-turbo/i-bought-a-car",
+    "title": "I bought a car.",
+    "date": "2005-05-29",
+    "summary": "My goal with this 1979 Porsche 924 Turbo is to make a car that is good fun at the track and is also usable for the odd r...",
+    "tags": [
+      "1979-porsche-924-turbo"
+    ],
+    "project": "1979-porsche-924-turbo"
+  },
+  {
+    "slug": "gaming/remember-stunts",
+    "title": "Remember Stunts?",
+    "date": "2002-12-30",
+    "summary": "My friend Ryan and I had one of those conversations that most gamers will be familiar with:",
+    "tags": [
+      "gaming"
+    ],
+    "project": "gaming"
   }
 ]

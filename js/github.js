@@ -67,6 +67,17 @@ const GitHub = (() => {
     return `${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
   }
 
+  // Live app URLs for repos that have a hosted version
+  const HOMEPAGES = {
+    'brownish-bomber': 'https://macbdog.github.io/brownish-bomber/',
+    'pixel-workshop-garage': 'https://macbdog.github.io/pixel-workshop-garage/',
+    'charlesvsworld': 'https://macbdog.github.io/charlesvsworld/',
+  };
+
+  function getHomepage(repoName) {
+    return HOMEPAGES[repoName] || null;
+  }
+
   // Repos classified as games (by name)
   const GAME_REPOS = new Set([
     'midimaster', 'gamejam', 'galagus', 'game', 'jump-buggy',
@@ -92,6 +103,7 @@ const GitHub = (() => {
     fetchRepos,
     filterGames,
     filterApps,
+    getHomepage,
     shortLang,
     truncate,
     shortDate
