@@ -64,19 +64,15 @@ const Menu = (() => {
 
     Terminal.writeLine([PAD, s('SysOp: ', C.C), s('macBdog', C.W), s('  \u2502  ', C.DG), s('Node 1', C.G), s('  \u2502  ', C.DG), s('14400 bps', C.G), s('  \u2502  ', C.DG), s('ANSI Detected', C.C)]);
     Terminal.writeLine([PAD, s('"Workshop dwellers unite!"', C.DG)]);
-    Terminal.writeLine('');
-
     wl(b.top('MAIN MENU', C.M));
     wl(b.emptyRow());
     writeMenuItem('G', 'Games',       'Game engines in Python and C++',       () => showGames());
     writeMenuItem('A', 'Apps',        'Useful and not-so useful web apps',    () => showApps());
-    writeMenuItem('E', 'Engineering', 'Cars, microcontrollers, CNC projects', () => showProjects());
+    writeMenuItem('P', 'Projects',    'Cars, microcontrollers, CNC projects', () => showProjects());
     writeMenuItem('I', 'System Info', 'About the SysOp',                     () => showSysInfo());
-    writeMenuItem('Q', 'Goodbye',     'Logoff',                              () => showGoodbye());
     wl(b.emptyRow());
     wl(b.bottom());
     wl(b.shadowFloor());
-    Terminal.writeLine('');
     Terminal.writeLine([PAD, s('Time Left: 58 min \u2502 ', C.DG), s('Select: ', C.G), s('_', C.W)]);
 
     Terminal.showCursor();
