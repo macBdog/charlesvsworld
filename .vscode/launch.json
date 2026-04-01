@@ -1,0 +1,12 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Start Web Server",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "python -m http.server 8080",
+      "cwd": "${workspaceFolder}"
+    }
+  ]
+}

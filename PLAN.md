@@ -1,7 +1,7 @@
 # CharlesVsWorld — 90s BBS Web Application
 
 ## Overview
-A static web application hosted on GitHub Pages that faithfully recreates the experience of dialing into a mid-1990s PC BBS. Features a modem dial-up connection sequence with sound, then presents a BBS-style terminal interface where the main menu items correspond to public GitHub repos for user **macBdog**.
+A static web application hosted on GitHub Pages that faithfully recreates the experience of dialing into a mid-1990s PC BBS. Features a modem dial-up connection sequence with sound, then presents a BBS-style terminal interface where the main menu items correspond to projects and public GitHub repos for user **macBdog**.
 
 ## Design Decisions
 - **GitHub username:** macBdog
@@ -52,11 +52,7 @@ Red #FF5555      Magenta #FF55FF     Yellow #FFFF55        White #FFFFFF
 
 ---
 
-## ASCII Art — "The Technomancer" Theme
-
-A tall character with brown hair battles elemental forces armed with a keyboard,
-soldering iron, and wrench. Each screen features a unique scene. Art uses ░▒▓█
-block shading for 3D depth, with ANSI color annotations in comments.
+## ASCII Art 
 
 Primary palette — grays, purples, blues (mapped to DOS colors in code):
 
@@ -70,197 +66,15 @@ Primary palette — grays, purples, blues (mapped to DOS colors in code):
 ```
 
 Colors per element:
-- Character skin:      Light Gray (#AAAAAA), White (#FFFFFF) highlights
-- Character hair:      Dark Magenta (#AA00AA)
-- Character body:      Dark Blue (#0000AA) tunic, Dark Gray (#555555) trim
-- Keyboard:            Cyan (#55FFFF) keys, Dark Cyan (#00AAAA) body
-- Soldering iron:      Magenta (#FF55FF) hot tip, Dark Gray (#555555) shaft
-- Wrench:              Light Gray (#AAAAAA) head, Dark Gray (#555555) handle
-- Lightning/sparks:    White (#FFFFFF) bolts, Blue (#5555FF) glow
-- Fire/energy:         Magenta (#FF55FF) + Dark Magenta (#AA00AA) embers
-- Wind/aura:           Cyan (#55FFFF) + Blue (#5555FF) wisps
-- Ground/terrain:      Dark Gray (#555555) base, Dark Blue (#0000AA) shadow
-- Gears/mechanical:    Light Gray (#AAAAAA) teeth, Dark Gray (#555555) body
 - Box borders:         Blue (#5555FF) lines, Cyan (#55FFFF) highlights
 - Menu text:           Light Gray (#AAAAAA) default, White (#FFFFFF) selected
 - Labels/headers:      Magenta (#FF55FF) titles, Cyan (#55FFFF) accents
 - Background glow:     Dark Blue (#0000AA) ambient wash behind character
 
-### Welcome Screen — "The Technomancer Arrives"
-Full character reveal, all three tools, elemental storm in the background.
-
 Each line has a color key suffix: `[B]`=Blue, `[C]`=Cyan, `[M]`=Magenta,
 `[DM]`=Dark Magenta, `[W]`=White, `[G]`=Light Gray, `[DG]`=Dark Gray,
 `[DB]`=Dark Blue. Multiple colors on one line are annotated inline.
 
-```
-  ·  ∙  *       ╱╲    ·  ∙ · *  ·    ╱╲           ·  *  ·     [B] lightning
-     ·    *    ╱╱╲╲  ·    *     ·   ╱╱╲╲      · ∙       *     [B]
-  ∙    ╲  ╱  ╱╱  ╲╲      ·  ∙    ╱╱  ╲╲  ╲  ╱     · ∙        [B]
-   ────╳────   ╲╲╱╱  · ∙     *    ╲╲╱╱   ────╳────    ·        [W] bolts
-  ∙    ╱  ╲    ╲╱       ·  ∙       ╲╱     ╱  ╲   *  ∙          [B]
-    ·    *        ·    ▄█████▄    ·    *          ·              [DM] hair
-   *  ·    ∙  ·       █▒░▒░▒░█      ·    ∙  · *      ·         [DM] hair
-            ·         █▒·   ·▒█          ·        *             [G] face
-       ~    ·  *      █▒ ─── ▒█     *  ·    ~         ·  [C]~  [G] face
-     ~ ~ ~             █▒▄▄▄▒█            ~ ~ ~          [C]~  [G]
-    ~ ~ ~ ~  ·      ▄▄█╗     ╔█▄▄     ·  ~ ~ ~ ~       [C]~  [DB] tunic
-     ~ ~ ~        ▄█  ║╠═════╣║  █▄       ~ ~ ~   *    [C]~  [DB] tunic
-  ╔══════╗░░    ▄█▀  ═╬║█████║╬═  ▀█▄   ░░╔═══╤══╗    [C]kbd [DB]body [DG]wrn
-  ║▓░▓░▓░║░░  ██   ══╬║█████║╬══   ██  ░░╟┐  │  ╢    [C]kbd [DB]body [DG]wrn
-  ║░▓░▓░▓║░░  ██     ═╬║█████║╬═     ██ ░░║└──┘  ║    [C]    [DB]     [DG]
-  ║▓░▓░▓░║░   █       ║║▓▓▓▓▓║║       █   ║  ┌──┐║    [C]    [DB]     [G]wrn
-  ║░▓░▓░▓║   ░█       ║║▓▓▓▓▓║║       █░  ║  │  │║    [C]    [DG]legs [G]
-  ╚══════╝   ░█░     ╔╝║     ║╚╗     ░█░  ╚══╧══╝     [C]    [DG]     [G]
-   KEYBOARD  ░██░   ╔╝ ║     ║ ╚╗   ░██░  WRENCH       [C]lbl [DG]    [G]lbl
-             ░█ █░ ╔╝  ╨     ╨  ╚╗ ░█ █░               [DG] legs/feet
-  ▓▓▓░░░    ░█   █╝                ╚█   █░    ░░░▓▓▓   [DM] energy ground
-  █▓▓▓░░  ░█▀     ▀█▄          ▄█▀     ▀█░  ░░▓▓▓█    [DM]+[M] energy
-  ▓▓░░░  ░█         ▀██▄    ▄██▀         █░  ░░░▓▓     [M] energy glow
-  ░░░   ▄█▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█▄   ░░░    [DB] dark ground
-  ░   ▄██▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓██▄   ░   [DB]+[DG] ground
-  ▓▓████▓▓▓▓▓▓▓▓ SOLDERING  IRON ▓▓▓▓▓▓▓▓▓▓▓▓████▓▓   [M]tip [DG]shaft
-```
-
-### Main Menu — "Battle Stance"
-Smaller portrait: character in ready stance, keyboard shield raised, surrounded
-by a faint elemental aura.
-
-```
-                  ░░░░░ ·  *  · ░░░░░                          [DB] aura glow
-                 ░▒▒▒▒▒░  ·  ░▒▒▒▒▒░                          [B] aura
-                  ▄█████▄   *   ·                               [DM] hair
-                 █▒░▓▓░▒█    ·       ╔═════════════════════╗    [DM]hair [B]box
-                 █▒·  ·▒█           ═╣  CHARLES vs WORLD   ╠═  [G]face [M]title
-                 █▒ ── ▒█            ╠═════════════════════╣    [G]face [B]box
-                  █▒▄▄▒█             ║                     ║    [G]     [B]
-               ▄▄█╗    ╔█▄▄         ║  [F] File Areas     ║    [DB]tunic [C]key
-    ╔══════╗ ▄█══╬╠════╣╬══█▄       ║  [B] Bulletins      ║    [C]kbd [DB]tunic
-    ║▓░▓░▓░██  ══╬║████║╬══  █     ║  [I] Sys Info       ║    [C]kbd [DB]body
-    ║░▓░▓░▓║█   ═╬║████║╬═   █     ║  [G] Goodbye        ║    [C]    [DB]
-    ╚══════╝ █    ║║▓▓▓▓║║    █      ║                     ║    [C]    [DG]legs
-              █  ╔╝║    ║╚╗  █       ╚═════════════════════╝    [DG]   [B]box
-             █░╔╝  ╨    ╨  ╚╗░█                                [DG] legs
-            █▀ ▀█▄        ▄█▀ ▀█   Time Left: 58 min           [DG] [G]text
-  ░░▓▓▓▓▓▓█     ▀████████▀     █▓▓▓▓▓▓░░   Select: _          [DB] ground
-```
-
-### File Areas — "Lightning Coder"
-Character slams keyboard, lightning erupts upward into the file listing.
-The lightning bolts form the dividers between file entries.
-
-```
-                     *  ╱╲  *             ═══ FILE AREAS ═══    [W]bolts [M]title
-                   ·   ╱╱╲╲   ·                                [W]+[B] lightning
-                  ╲  ╱╱╱  ╲╲╲  ╱         #  Project        Lang [B]bolts [G]text
-               ────╳╱╱      ╲╲╳────      ─────────────────────  [W]flash [DG]rule
-                  ╱╲╲   ▄▄   ╱╱╲         1  pixel-workshop  JS [B]      [G]
-                    ╲╲ █▒▒█ ╱╱            2  midimaster      Py [B]bolt [DM]hair
-                     ╲ █▒▒█ ╱             3  gamejam         Py [B]     [G]face
-                       █▒▒█               4  brownish-bomber HTML       [G]face
-                    ▄█╗╠══╣╔█▄            5  galagus         Lua [DB]tunic
-      ╔══════╗░░  ██═╬╠════╣╬═██          6  game            C++ [C]kbd [DB]body
-      ║▓░▓░▓░║░░ █══╬║████║╬══█          7  jump-buggy      C#  [C]    [DB]
-      ║░▓░▓░▓║░░ █ ═╬║████║╬═ █          8  burntestrobot   C++ [C]    [DB]
-      ║▓░▓░▓░║░  █  ═║████║═  █          9  gpu-particles   C#  [C]    [DG]
-      ╚══════╝    █   ║    ║   █         ─────────────────────   [C]    [DG]
-    ·  * ╲ ╱ ·   █░  ╨    ╨  ░█                                [B]sparks [DG]
-   ╲  ╱ ──╳── ╲╱ █▄        ▄█          [#] View   [M] Menu     [W]flash [C]key
-   ╱  ╲ ╱ ╲  ╱ ╲ ▀██████████▀          Select: _               [B]     [DG]
-   ·    · * ·  *                                                [B] fading sparks
-  ░░░▓▓███████████████████████████▓▓░░░                         [DB]+[DG] ground
-```
-
-### Bulletin Board — "Forge & Fire"
-Character wields soldering iron overhead, sparks and magenta energy rise from
-a circuit board below. The bulletin text appears in the glow.
-
-```
-                      · * ·  .  · * ·                           [M] hot sparks
-              *  .  ·  ╔══╤══╗  ·  .  *                         [M]tip [DG]shaft
-                 ·    ═╣▓▓│▒▒╠═    ·                            [M]glow [DG]iron
-                   .  ═╣▓▓│░░╠═  .            ╔═══════════════╗ [DM]   [B]box
-                  *    ╚══╧══╝    *           ║  BULLETIN     ║ [DG]   [M]title
-                       █▒▄▄▒█                 ║   BOARD       ║ [DM]hair [M]
-                    ▄▄█╗    ╔█▄▄              ╠═══════════════╣ [DB]tunic [B]
-                  ▄█══╬╠════╣╬══█▄            ║               ║ [DB]body  [B]
-                 ██ ══╬║████║╬══ ██           ║  Latest from  ║ [DB]     [G]text
-                 █  ═╬║████║╬═   █           ║  the SysOp:  ║ [DB]     [G]
-                 █    ║║▓▓▓▓║║    █           ║               ║ [DG]legs [B]
-                  █  ╔╝║    ║╚╗  █            ║  >> Message   ║ [DG]    [C]>>
-                 █░╔╝  ╨    ╨  ╚╗░█          ║     of the   ║ [DG]    [G]
-           ░░▒▒▓██                ██▓▒▒░░     ║     day...   ║ [DM]glow [G]
-         ░░▒▒▓▓██  · ░▒▓█▓▒░ ·   ██▓▓▒▒░░   ║               ║ [M]+[DM]energy
-        ░▒▒▓███ ·░▒▓██████████▓▒░· ███▓▒▒░   ╚═══════════════╝ [DM]+[DB]board
-      ░▒▓███ ░▒▓████ CIRCUITS █████▓▒░ ███▓▒░                   [DB]+[DG]pcb
-     ▒▓██▓▒░▓████████████████████████▓░▒▓██▓▒  [M] Menu [Q] Quit [DB]base
-```
-
-### System Info — "The Workshop"
-Character with wrench, surrounded by gears and mechanical parts.
-Specs listed beside the illustration.
-
-```
-       ╔═══════════════════════════════════╗                     [B] box border
-       ║          SYSTEM INFO              ║                     [M] title
-       ╠═══════════════════════════════════╣                     [B]
-       ║                                   ║                     [B]
-       ║  SysOp  : macBdog                 ║                     [C]label [W]val
-       ║  System : 486 DX2-66MHz           ║                     [C]      [G]
-       ║  Memory : 8MB RAM                 ║                     [C]      [G]
-       ║  Modem  : USR Sportster 14.4k     ║                     [C]      [G]
-       ║  OS     : MS-DOS 6.22 + DESQview  ║                     [C]      [G]
-       ║  BBS SW : RemoteAccess 2.62       ║                     [C]      [G]
-       ║  Storage: 540MB Quantum Fireball  ║                     [C]      [G]
-       ║  Gone   : ∞ hrs to the cause      ║                     [C]      [G]
-       ║                                   ║                     [B]
-       ╚═══════════════════════════════════╝                     [B]
-                  ▄█████▄                                        [DM] hair
-                 █▒░▓▓░▒█                                        [DM] hair
-        ╔══╗     █▒·  ·▒█     ╭──────╮                [DG]gear  [G]face  [DG]gear
-       ╔╝╔═╝     █▒ ── ▒█    ╭╯ ╔═══╗╰╮              [DG]      [G]     [DG]
-      ╔╝╔╝ ·      █▒▄▄▒█    ╭╯ ╔╝   ╚╗╰╮             [DG]      [G]     [DG]
-     ╔╝╔╝     ▄▄█╗╠════╣╔█▄▄│ ╔╝ ╔═╗ ╚╗│  GEARS      [DG]     [DB]tunic [DG]
-     ║ ║   ▄██══╬╠╣    ╠╬══██╗╚╗ ║ ║ ╔╝│              [DG]     [DB]body  [DG]
-     ╚╗╚╗  █══╬═║║║████║║═══█║ ╚╗╚═╝╔╝╭╯              [DG]     [DB]      [DG]
-      ╚╗╚╗ █  ═║═║║████║║ ══█║  ╰╮╔═╝╭╯               [DG]     [DB]      [DG]
-       ╚═╚═█   ║ ║║▓▓▓▓║║   █║   ╰──╯                 [DG]     [DG]legs
-            █  ╔╝ ╨║    ║╨ ╚╗█  ╔══╤══╗                         [DG]    [G]wrench
-           █░╔╝    ║    ║    ╚╗░█╟┐ │  ╢                         [DG]    [G]
-          █▀╝      ╨    ╨      ╚▀█║ └──┘║  WRENCH                [DG]    [G]
-  ░▓▓████▀                       ▀████▓▓║  ┌──┐║                [DB]ground [G]
-  ▓████▀  ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄  ▀████╚══╧══╝                [DB]+[DG]floor
-```
-
-### Goodbye — "Until Next Time"
-Character walks into the distance, silhouette shrinking. Tools
-slung over shoulder. Screen fades to static.
-
-```
-
-       T H A N K S   F O R   C A L L I N G !                    [M] heading
-
-              ·    ·    ·    ·    ·                              [B] stars
-           ·    ·    ·    ·    ·    ·                            [B]
-        ═══════════════════════════════════                      [DG] horizon
-                        ·                                        [W] star
-                       ▄█▄                                       [DM] hair
-                      █▒░▒█           ╔══╗                [G]face [DG]iron
-                       █▒█═══════════╗║▒▒║                [DB]tunic [M]tip
-                      ╔╣╠╗     ▓░▓░▓░╚╣▒▒║               [DB]body  [C]kbd
-                      ║███║    ░▓░▓░▓░║══╝                [DB]      [C]
-                      ║   ║    ▓░▓░▓░╔╝                   [DG]legs  [C]
-                     ╔╝   ╚╗   ══════╝                    [DG]      [DG]iron
-                    ╱╱     ╲╲                              [DG] feet
-                  ▄▀         ▀▄                            [DG]
-        ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─                 [DG] road
-       ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░                [DB] static band 1
-       ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒               [DB]+[DG] static 2
-       ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓               [DG] static band 3
-
-                   N O   C A R R I E R                      [W] blink
-
-```
 
 ---
 
@@ -330,31 +144,7 @@ Classic numbered BBS menu. Repos are fetched from GitHub API and mapped to "File
   Time Left: 58 min │ Select: _
 ```
 
-### 4. File Areas (Project Browser)
-Selecting [F] shows repos as numbered file areas:
-
-```
-══════════════════ FILE AREAS ══════════════════
- #  Area Name                Language   Description
-───────────────────────────────────────────────────────
- 1  pixel-workshop-garage    JS         Personal project site and index
- 2  midimaster               Python     Rhythm game with musical notation
- 3  gamejam                  Python     OpenGL game jamming framework
- 4  brownish-bomber          HTML       Boxing workout generator webapp
- 5  galagus                  Lua        3D space shooter
- 6  game                     C++        Game project
- 7  jump-buggy               C#         Unity3D VR racing game
- 8  burntestrobot            C++        Arduino burn test robot
- 9  genericgamedev-gpu-...   C#         GPU particle system
-───────────────────────────────────────────────────────
- [#] View Details  [M] Main Menu  [Q] Quit
- Select: _
-```
-
 Selecting a number opens a detail view with repo description, language, stars, last updated, and a link that opens the actual GitHub repo.
-
-### 5. Bulletin Board
-Shows recent GitHub activity or a static "SysOp message of the day."
 
 ### 6. System Info
 About page — SysOp bio, system specs (played for laughs: "486 DX2-66, 8MB RAM, 14.4k USR Sportster"), link to GitHub profile.

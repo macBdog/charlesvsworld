@@ -5,16 +5,12 @@ const GitHub = (() => {
   const CACHE_KEY = 'cvw_repos';
 
   // Hardcoded fallback if API fails (rate limit, offline, etc.)
-  const FALLBACK_REPOS = [
-    { name: 'pixel-workshop-garage', description: 'Personal project site and index', language: 'JavaScript', html_url: 'https://github.com/macBdog/pixel-workshop-garage', stargazers_count: 0, updated_at: '2025-01-01' },
+  const FALLBACK_REPOS = [   
     { name: 'midimaster', description: 'A rhythm game written in Python that uses musical score notation for display.', language: 'Python', html_url: 'https://github.com/macBdog/midimaster', stargazers_count: 0, updated_at: '2025-01-01' },
     { name: 'gamejam', description: 'A Python and OpenGL game jamming framework.', language: 'Python', html_url: 'https://github.com/macBdog/gamejam', stargazers_count: 0, updated_at: '2025-01-01' },
     { name: 'brownish-bomber', description: 'The Brownish Bomber boxing workout generator webapp', language: 'HTML', html_url: 'https://github.com/macBdog/brownish-bomber', stargazers_count: 0, updated_at: '2025-01-01' },
     { name: 'galagus', description: 'A space shooter with a 3D viewpoint written in LUA for my gamejam engine.', language: 'Lua', html_url: 'https://github.com/macBdog/galagus', stargazers_count: 0, updated_at: '2025-01-01' },
     { name: 'game', description: 'Game project', language: 'C++', html_url: 'https://github.com/macBdog/game', stargazers_count: 0, updated_at: '2025-01-01' },
-    { name: 'jump-buggy', description: 'Unity3D racing game on roller-coaster like tracks. Strong "Stunt car racer" influence. VR support.', language: 'C#', html_url: 'https://github.com/macBdog/jump-buggy', stargazers_count: 0, updated_at: '2025-01-01' },
-    { name: 'burntestrobot', description: 'Arduino code for robot that repeatedly burns a sample with a soldering iron for a preset time.', language: 'C++', html_url: 'https://github.com/macBdog/burntestrobot', stargazers_count: 0, updated_at: '2025-01-01' },
-    { name: 'genericgamedev-gpu-particles', description: 'Example project for GPU simulated parametric particles using OpenGL in C#.', language: 'C#', html_url: 'https://github.com/macBdog/genericgamedev-gpu-particles', stargazers_count: 0, updated_at: '2025-01-01' },
   ];
 
   async function fetchRepos() {
@@ -69,9 +65,8 @@ const GitHub = (() => {
 
   // Live app URLs for repos that have a hosted version
   const HOMEPAGES = {
-    'brownish-bomber': 'https://macbdog.github.io/brownish-bomber/',
-    'pixel-workshop-garage': 'https://macbdog.github.io/pixel-workshop-garage/',
-    'charlesvsworld': 'https://macbdog.github.io/charlesvsworld/',
+    'brownish-bomber': 'https://henden.com.au/brownish-bomber/',
+    'charlesvsworld': 'https://henden.com.au/',
   };
 
   function getHomepage(repoName) {
@@ -86,7 +81,7 @@ const GitHub = (() => {
 
   // Repos classified as apps (by name)
   const APP_REPOS = new Set([
-    'pixel-workshop-garage', 'brownish-bomber', 'charlesvsworld',
+    'brownish-bomber', 'charlesvsworld',
     'burntestrobot'
   ]);
 

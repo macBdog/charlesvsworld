@@ -2,3 +2,10 @@ node_modules/
 .DS_Store
 Thumbs.db
 *.tmp
+
+# Content media — lives on the GCP host, not in git
+content/projects/*/pics/
+content/projects/*/files/
+
+# Synced webapps — pulled from GitHub during deployment
+webapps/
