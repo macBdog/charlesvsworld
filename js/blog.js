@@ -1,6 +1,6 @@
-// blog.js — Load and render engineering blog posts from content/engineering/
+// blog.js — Load and render blog posts from content/
 const Blog = (() => {
-  const BASE = 'content/engineering';
+  const BASE = 'content/projects';
   let cachedPosts = null;
   let cachedProjects = null;
 

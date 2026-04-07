@@ -80,7 +80,7 @@ const Menu = (() => {
       const key = e.key.toUpperCase();
       if      (key === 'G') { removeHandler(); showGames(); }
       else if (key === 'A') { removeHandler(); showApps(); }
-      else if (key === 'E') { removeHandler(); showProjects(); }
+      else if (key === 'P') { removeHandler(); showProjects(); }
       else if (key === 'I') { removeHandler(); showSysInfo(); }
       else if (key === 'Q') { removeHandler(); showGoodbye(); }
     });
@@ -214,14 +214,14 @@ const Menu = (() => {
     });
   }
 
-  // ── ENGINEERING (project list) ──
+  // ── Project list) ──
   async function showProjects() {
     Terminal.clear();
     Terminal.hideCursor();
 
     const projects = await Blog.fetchProjects();
 
-    wl(b.top('ENGINEERING', C.M));
+    wl(b.top('PROJECTS', C.M));
     wl(b.row([
       s(' #   ', C.DG),
       s('Project'.padEnd(35), C.C),
@@ -275,7 +275,7 @@ const Menu = (() => {
     });
   }
 
-  // ── ENGINEERING PROJECT POSTS ──
+  // ── PROJECT POSTS ──
   async function showProjectPosts(project) {
     Terminal.clear();
     Terminal.hideCursor();
@@ -323,7 +323,7 @@ const Menu = (() => {
     wl(b.divider());
     wl(b.row([
       s('[', C.C), s('#', C.W), s('] Read Post     ', C.C),
-      s('[', C.C), s('E', C.W), s('] Engineering   ', C.C),
+      s('[', C.C), s('E', C.W), s('] Projects   ', C.C),
       s('[', C.C), s('M', C.W), s('] Main Menu     ', C.C),
       s('[', C.C), s('Q', C.W), s('] Quit', C.C),
     ]));
@@ -353,7 +353,7 @@ const Menu = (() => {
     });
   }
 
-  // ── ENGINEERING POST DETAIL ──
+  // ── PROJECT POST DETAIL ──
   async function showPost(post, project) {
     Terminal.clear();
     Terminal.hideCursor();
@@ -392,7 +392,7 @@ const Menu = (() => {
         // Resolve image src relative to the post's content folder
         const imgSrc = block.src.startsWith('http')
           ? block.src
-          : `content/engineering/${post.slug}/${block.src}`;
+          : `content/${post.slug}/${block.src}`;
         Terminal.writeImage(imgSrc, block.text || block.src, contentW);
       } else if (block.type === 'blank') {
         wl(b.emptyRow());
@@ -421,8 +421,8 @@ const Menu = (() => {
     Terminal.writeLine([PAD, ...opts]);
 
     const opts2 = [];
-    if (project) opts2.push(s('[B] Back to Project   ', C.C));
-    opts2.push(s('[E] Engineering   ', C.C), s('[M] Main Menu', C.C));
+    if (project) opts2.push(s('[B] Back to Projects   ', C.C));
+    opts2.push(s('[E] Projects   ', C.C), s('[M] Main Menu', C.C));
     Terminal.writeLine([PAD, ...opts2]);
     Terminal.writeLine([PAD, s('Select: ', C.G), s('_', C.W)]);
     Terminal.showCursor();
