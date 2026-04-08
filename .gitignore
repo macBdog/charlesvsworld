@@ -8,3 +8,6 @@ content/
 
 # Synced webapps — pulled from GitHub during deployment
 webapps/
+
+# Build output — generated during deployment, not in git
+_build/

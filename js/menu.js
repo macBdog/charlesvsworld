@@ -224,8 +224,7 @@ const Menu = (() => {
     wl(b.top('PROJECTS', C.M));
     wl(b.row([
       s(' #   ', C.DG),
-      s('Project'.padEnd(35), C.C),
-      s('Posts', C.B),
+      s('Project', C.C),
     ]));
     wl(b.divider());
 
@@ -234,13 +233,11 @@ const Menu = (() => {
 
     projects.forEach((proj, i) => {
       const key  = keyFor(i);
-      const name = GitHub.truncate(proj.name, 35).padEnd(35);
-      const cnt  = String(proj.count).padStart(3);
+      const name = GitHub.truncate(proj.name, 38).padEnd(38);
 
       wlClick(b.row([
         s('  ' + key + '  ', C.W),
         s(name, C.C),
-        s(cnt, C.G),
       ]), () => showProjectPosts(proj));
     });
 
@@ -323,7 +320,7 @@ const Menu = (() => {
     wl(b.divider());
     wl(b.row([
       s('[', C.C), s('#', C.W), s('] Read Post     ', C.C),
-      s('[', C.C), s('E', C.W), s('] Projects   ', C.C),
+      s('[', C.C), s('P', C.W), s('] Projects   ', C.C),
       s('[', C.C), s('M', C.W), s('] Main Menu     ', C.C),
       s('[', C.C), s('Q', C.W), s('] Quit', C.C),
     ]));
@@ -338,7 +335,7 @@ const Menu = (() => {
 
     setHandler((e) => {
       const key = e.key.toUpperCase();
-      if (key === 'E') { removeHandler(); showProjects(); }
+      if (key === 'P') { removeHandler(); showProjects(); }
       else if (key === 'M') { removeHandler(); showMainMenu(); }
       else if (key === 'Q') { removeHandler(); showGoodbye(); }
       else if (key === 'N' && page < totalPages - 1) { removeHandler(); page++; showProjectPosts(project); }
@@ -389,10 +386,10 @@ const Menu = (() => {
           wl(b.row([s('  ' + ln, C.G)]));
         }
       } else if (block.type === 'img') {
-        // Resolve image src relative to the post's content folder
+        // Resolve image src relative to the project's content folder
         const imgSrc = block.src.startsWith('http')
           ? block.src
-          : `content/${post.slug}/${block.src}`;
+          : `content/projects/${post.projectSlug}/${block.src}`;
         Terminal.writeImage(imgSrc, block.text || block.src, contentW);
       } else if (block.type === 'blank') {
         wl(b.emptyRow());
@@ -422,7 +419,7 @@ const Menu = (() => {
 
     const opts2 = [];
     if (project) opts2.push(s('[B] Back to Projects   ', C.C));
-    opts2.push(s('[E] Projects   ', C.C), s('[M] Main Menu', C.C));
+    opts2.push(s('[P] Projects   ', C.C), s('[M] Main Menu', C.C));
     Terminal.writeLine([PAD, ...opts2]);
     Terminal.writeLine([PAD, s('Select: ', C.G), s('_', C.W)]);
     Terminal.showCursor();
@@ -433,7 +430,7 @@ const Menu = (() => {
       else if (key === 'P' && hasPrev) { removeHandler(); showPost(allPosts[curIdx - 1], project); }
       else if (key === 'N' && hasNext) { removeHandler(); showPost(allPosts[curIdx + 1], project); }
       else if (key === 'B' && project) { removeHandler(); showProjectPosts(project); }
-      else if (key === 'E') { removeHandler(); showProjects(); }
+      else if (key === 'P') { removeHandler(); showProjects(); }
       else if (key === 'M') { removeHandler(); showMainMenu(); }
     });
   }

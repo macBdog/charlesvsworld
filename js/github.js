@@ -65,8 +65,7 @@ const GitHub = (() => {
 
   // Live app URLs for repos that have a hosted version
   const HOMEPAGES = {
-    'brownish-bomber': 'https://henden.com.au/brownish-bomber/',
-    'charlesvsworld': 'https://henden.com.au/',
+    'brownish-bomber': 'https://henden.com.au/brownish-bomber/'
   };
 
   function getHomepage(repoName) {
@@ -75,14 +74,12 @@ const GitHub = (() => {
 
   // Repos classified as games (by name)
   const GAME_REPOS = new Set([
-    'midimaster', 'gamejam', 'galagus', 'game', 'jump-buggy',
-    'genericgamedev-gpu-particles'
+    'midimaster', 'gamejam', 'galagus', 'game', 'jump-buggy'
   ]);
 
   // Repos classified as apps (by name)
   const APP_REPOS = new Set([
-    'brownish-bomber', 'charlesvsworld',
-    'burntestrobot'
+    'brownish-bomber'
   ]);
 
   function filterGames(repos) {

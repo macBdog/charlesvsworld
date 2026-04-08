@@ -33,30 +33,115 @@ GITHUB_USER="macBdog"
 
 build() {
   echo "==> Building site into ${BUILD_DIR}"
-  rm -rf "${BUILD_DIR}"
   mkdir -p "${BUILD_DIR}"
 
-  # Copy the site code (HTML, JS, CSS)
-  cp "${SCRIPT_DIR}/index.html" "${BUILD_DIR}/"
-  cp -r "${SCRIPT_DIR}/css" "${BUILD_DIR}/"
-  cp -r "${SCRIPT_DIR}/js" "${BUILD_DIR}/"
+  # copy_newer <src_dir> <dest_dir>
+  # Copies files from src to dest only if missing or source is newer.
+  # Works on both Linux and Git Bash (no rsync required).
+  # Prints the number of files updated.
+  copy_newer() {
+    local src="$1" dest="$2"
+    local count=0
+    mkdir -p "${dest}"
+    for src_file in "${src}"/*; do
+      [ -f "${src_file}" ] || continue
+      local fname dest_file
+      fname="$(basename "${src_file}")"
+      dest_file="${dest}/${fname}"
+      if [ ! -f "${dest_file}" ] || [ "${src_file}" -nt "${dest_file}" ]; then
+        cp "${src_file}" "${dest_file}"
+        count=$((count + 1))
+      fi
+    done
+    echo "${count}"
+  }
 
-  # Copy content (markdown + media)
-  mkdir -p "${BUILD_DIR}/content"
-  cp -r "${CONTENT_DIR}/projects" "${BUILD_DIR}/content/"
-  [ -f "${CONTENT_DIR}/FORMAT.md" ] && cp "${CONTENT_DIR}/FORMAT.md" "${BUILD_DIR}/content/"
+  # Site code (HTML, JS, CSS)
+  echo "    Syncing site code..."
+  cp -u "${SCRIPT_DIR}/index.html" "${BUILD_DIR}/"
+  js_updated=$(copy_newer  "${SCRIPT_DIR}/js"  "${BUILD_DIR}/js")
+  css_updated=$(copy_newer "${SCRIPT_DIR}/css" "${BUILD_DIR}/css")
+  [ "${js_updated}"  -gt 0 ] && echo "    js:  ${js_updated} file(s) updated"  || echo "    js:  up to date"
+  [ "${css_updated}" -gt 0 ] && echo "    css: ${css_updated} file(s) updated" || echo "    css: up to date"
 
-  # Copy synced webapps if present
-  if [ -d "${WEBAPPS_DIR}" ]; then
-    echo "==> Including webapps"
+  # Content — sync each project incrementally
+  echo "    Syncing content from ${CONTENT_DIR}..."
+  mkdir -p "${BUILD_DIR}/content/projects"
+  cp -u "${CONTENT_DIR}/projects/projects.json" "${BUILD_DIR}/content/projects/" 2>/dev/null || true
+  cp -u "${CONTENT_DIR}/FORMAT.md"              "${BUILD_DIR}/content/"          2>/dev/null || true
+
+  project_count=$(find "${CONTENT_DIR}/projects" -maxdepth 1 -mindepth 1 -type d | wc -l)
+  echo "    ${project_count} projects found"
+  total_new=0
+
+  for proj_dir in "${CONTENT_DIR}/projects"/*/; do
+    proj_name="$(basename "${proj_dir}")"
+    dest="${BUILD_DIR}/content/projects/${proj_name}"
+    mkdir -p "${dest}"
+
+    changed=0
+
+    # post.md — copy if newer
+    if [ -f "${proj_dir}/post.md" ]; then
+      if [ ! -f "${dest}/post.md" ] || [ "${proj_dir}/post.md" -nt "${dest}/post.md" ]; then
+        cp "${proj_dir}/post.md" "${dest}/"
+        changed=$((changed + 1))
+      fi
+    fi
+
+    # pics/ — copy newer files, then regenerate index.json
+    if [ -d "${proj_dir}/pics" ]; then
+      pic_new=$(copy_newer "${proj_dir}/pics" "${dest}/pics")
+      changed=$((changed + pic_new))
+
+      # Generate pics/index.json — array of filenames for browser auto-insertion
+      index_json="${dest}/pics/index.json"
+      (
+        echo '['
+        first=1
+        for f in "${dest}/pics/"*; do
+          fname="$(basename "${f}")"
+          [ "${fname}" = "index.json" ] && continue
+          [ -d "${f}" ] && continue
+          [ "${first}" = "1" ] && first=0 || echo ','
+          printf '  "%s"' "${fname}"
+        done
+        echo ''
+        echo ']'
+      ) > "${index_json}"
+    fi
+
+    # files/ — copy newer files
+    if [ -d "${proj_dir}/files" ]; then
+      files_new=$(copy_newer "${proj_dir}/files" "${dest}/files")
+      changed=$((changed + files_new))
+    fi
+
+    if [ "${changed}" -gt 0 ]; then
+      pic_total=$(find "${dest}/pics" -maxdepth 1 -type f 2>/dev/null | wc -l)
+      echo "    ${proj_name}: ${changed} file(s) updated (${pic_total} pics total)"
+      total_new=$((total_new + changed))
+    else
+      echo "    ${proj_name}: up to date"
+    fi
+  done
+
+  echo "    Content sync: ${total_new} file(s) updated"
+
+  # Webapps — sync incrementally
+  if [ -d "${WEBAPPS_DIR}" ] && [ -n "$(ls -A "${WEBAPPS_DIR}" 2>/dev/null)" ]; then
+    echo "    Syncing webapps..."
     for app_dir in "${WEBAPPS_DIR}"/*/; do
       app_name="$(basename "${app_dir}")"
-      cp -r "${app_dir}" "${BUILD_DIR}/${app_name}"
-      echo "    ${app_name}/ -> ${DOMAIN}/${app_name}/"
+      mkdir -p "${BUILD_DIR}/${app_name}"
+      cp -ru "${app_dir}/." "${BUILD_DIR}/${app_name}/"
+      echo "    ${app_name}: synced"
     done
   fi
 
-  echo "==> Build complete: ${BUILD_DIR}"
+  total_files=$(find "${BUILD_DIR}" -type f | wc -l)
+  build_size=$(du -sh "${BUILD_DIR}" | cut -f1)
+  echo "==> Build complete: ${total_files} files, ${build_size} — ${BUILD_DIR}"
 }
 
 sync_webapps() {
@@ -94,11 +179,23 @@ upload() {
   # Sync build output to the GCS bucket serving henden.com.au
   gsutil -m rsync -r -d "${BUILD_DIR}" "${GCP_BUCKET}"
 
-  # Set cache headers: long cache for images, short for HTML/JS
-  gsutil -m setmeta -h "Cache-Control:public, max-age=86400" "${GCP_BUCKET}/content/**"
-  gsutil -m setmeta -h "Cache-Control:public, max-age=3600" "${GCP_BUCKET}/*.html"
-  gsutil -m setmeta -h "Cache-Control:public, max-age=3600" "${GCP_BUCKET}/js/**"
-  gsutil -m setmeta -h "Cache-Control:public, max-age=3600" "${GCP_BUCKET}/css/**"
+  # Set cache headers:
+  #   images/files: long cache (they don't change between deploys)
+  #   markdown/json content: no-cache (always re-validate so deploys show immediately)
+  #   html/js/css: short cache
+  gsutil -m setmeta -h "Cache-Control:public, max-age=86400" \
+    "${GCP_BUCKET}/content/projects/*/pics/**" 2>/dev/null || true
+  gsutil -m setmeta -h "Cache-Control:no-cache, must-revalidate" \
+    "${GCP_BUCKET}/content/**/*.md" "${GCP_BUCKET}/content/**/*.json" 2>/dev/null || true
+  gsutil -m setmeta -h "Cache-Control:public, max-age=300" \
+    "${GCP_BUCKET}/*.html" "${GCP_BUCKET}/js/**" "${GCP_BUCKET}/css/**" 2>/dev/null || true
+
+  # Invalidate Cloud CDN so the new files are served immediately
+  echo "==> Invalidating CDN cache"
+  gcloud compute url-maps invalidate-cdn-cache "${DOMAIN//./-}-urlmap" \
+    --path "/*" \
+    --global \
+    --async 2>/dev/null || echo "    (CDN invalidation skipped — not configured)"
 
   echo "==> Upload complete: https://${DOMAIN}"
 }
