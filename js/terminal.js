@@ -101,9 +101,9 @@ const Terminal = (() => {
     img.alt = alt || '';
     img.className = 'term-img';
     // Constrain to roughly maxWidthCh character widths (1ch ≈ 9.6px at our font size)
-    const maxPx = (maxWidthCh || 76) * 9.6;
+    const maxPx = (maxWidthCh || 76) * 19.2;
     img.style.maxWidth = maxPx + 'px';
-    img.style.maxHeight = '400px';
+    img.style.maxHeight = '800px';
     img.onload = () => { scrollToBottom(); updateCursorPosition(); };
 
     wrapper.appendChild(img);

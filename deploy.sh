@@ -55,11 +55,34 @@ build() {
     echo "${count}"
   }
 
+  # remove_deleted <src_dir> <dest_dir> [exclude_filename]
+  # Removes files from dest that no longer exist in src.
+  # Optional third argument: a filename to never delete (e.g. index.json).
+  # Prints the number of files removed.
+  remove_deleted() {
+    local src="$1" dest="$2" exclude="${3:-}"
+    local count=0
+    [ -d "${dest}" ] || return 0
+    for dest_file in "${dest}"/*; do
+      [ -f "${dest_file}" ] || continue
+      local fname
+      fname="$(basename "${dest_file}")"
+      [ "${fname}" = "${exclude}" ] && continue
+      if [ ! -f "${src}/${fname}" ]; then
+        rm "${dest_file}"
+        count=$((count + 1))
+      fi
+    done
+    echo "${count}"
+  }
+
   # Site code (HTML, JS, CSS)
   echo "    Syncing site code..."
   cp -u "${SCRIPT_DIR}/index.html" "${BUILD_DIR}/"
   js_updated=$(copy_newer  "${SCRIPT_DIR}/js"  "${BUILD_DIR}/js")
+  remove_deleted "${SCRIPT_DIR}/js"  "${BUILD_DIR}/js"  > /dev/null
   css_updated=$(copy_newer "${SCRIPT_DIR}/css" "${BUILD_DIR}/css")
+  remove_deleted "${SCRIPT_DIR}/css" "${BUILD_DIR}/css" > /dev/null
   [ "${js_updated}"  -gt 0 ] && echo "    js:  ${js_updated} file(s) updated"  || echo "    js:  up to date"
   [ "${css_updated}" -gt 0 ] && echo "    css: ${css_updated} file(s) updated" || echo "    css: up to date"
 
@@ -68,6 +91,16 @@ build() {
   mkdir -p "${BUILD_DIR}/content/projects"
   cp -u "${CONTENT_DIR}/projects/projects.json" "${BUILD_DIR}/content/projects/" 2>/dev/null || true
   cp -u "${CONTENT_DIR}/FORMAT.md"              "${BUILD_DIR}/content/"          2>/dev/null || true
+
+  # Remove project folders in _build that no longer exist in content
+  for build_proj in "${BUILD_DIR}/content/projects"/*/; do
+    [ -d "${build_proj}" ] || continue
+    proj_name="$(basename "${build_proj}")"
+    if [ ! -d "${CONTENT_DIR}/projects/${proj_name}" ]; then
+      echo "    Removing deleted project: ${proj_name}"
+      rm -rf "${build_proj}"
+    fi
+  done
 
   project_count=$(find "${CONTENT_DIR}/projects" -maxdepth 1 -mindepth 1 -type d | wc -l)
   echo "    ${project_count} projects found"
@@ -88,9 +121,10 @@ build() {
       fi
     fi
 
-    # pics/ — copy newer files, then regenerate index.json
+    # pics/ — copy newer files, remove deleted, then regenerate index.json
     if [ -d "${proj_dir}/pics" ]; then
       pic_new=$(copy_newer "${proj_dir}/pics" "${dest}/pics")
+      remove_deleted "${proj_dir}/pics" "${dest}/pics" "index.json" > /dev/null
       changed=$((changed + pic_new))
 
       # Generate pics/index.json — array of filenames for browser auto-insertion
@@ -110,9 +144,10 @@ build() {
       ) > "${index_json}"
     fi
 
-    # files/ — copy newer files
+    # files/ — copy newer files, remove deleted
     if [ -d "${proj_dir}/files" ]; then
       files_new=$(copy_newer "${proj_dir}/files" "${dest}/files")
+      remove_deleted "${proj_dir}/files" "${dest}/files" > /dev/null
       changed=$((changed + files_new))
     fi
 
