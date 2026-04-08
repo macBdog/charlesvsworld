@@ -65,7 +65,7 @@ const GitHub = (() => {
 
   // Live app URLs for repos that have a hosted version
   const HOMEPAGES = {
-    'brownish-bomber': 'https://henden.com.au/brownish-bomber/'
+    'brownish-bomber': 'https://henden.com.au/brownish-bomber'
   };
 
   function getHomepage(repoName) {

@@ -36,12 +36,19 @@ build() {
 
   # copy_newer <src_dir> <dest_dir>
   # Copies files from src to dest only if missing or source is newer.
+  # Short-circuits via directory mtime: if dest dir exists and src dir is not
+  # newer than dest dir, skips all file checks and returns 0 immediately.
   # Works on both Linux and Git Bash (no rsync required).
   # Prints the number of files updated.
   copy_newer() {
     local src="$1" dest="$2"
     local count=0
     mkdir -p "${dest}"
+    # Fast path: if the source directory hasn't been modified since last sync, skip
+    if [ -d "${dest}" ] && [ ! "${src}" -nt "${dest}" ]; then
+      echo 0
+      return
+    fi
     for src_file in "${src}"/*; do
       [ -f "${src_file}" ] || continue
       local fname dest_file
@@ -76,15 +83,14 @@ build() {
     echo "${count}"
   }
 
-  # Site code (HTML, JS, CSS)
+  # Site code (HTML, JS, CSS) — always overwrite (files are small, timestamps unreliable)
   echo "    Syncing site code..."
-  cp -u "${SCRIPT_DIR}/index.html" "${BUILD_DIR}/"
-  js_updated=$(copy_newer  "${SCRIPT_DIR}/js"  "${BUILD_DIR}/js")
+  cp -f "${SCRIPT_DIR}/index.html" "${BUILD_DIR}/"
+  mkdir -p "${BUILD_DIR}/js"  && cp -f "${SCRIPT_DIR}/js/"*  "${BUILD_DIR}/js/"
+  mkdir -p "${BUILD_DIR}/css" && cp -f "${SCRIPT_DIR}/css/"* "${BUILD_DIR}/css/"
   remove_deleted "${SCRIPT_DIR}/js"  "${BUILD_DIR}/js"  > /dev/null
-  css_updated=$(copy_newer "${SCRIPT_DIR}/css" "${BUILD_DIR}/css")
   remove_deleted "${SCRIPT_DIR}/css" "${BUILD_DIR}/css" > /dev/null
-  [ "${js_updated}"  -gt 0 ] && echo "    js:  ${js_updated} file(s) updated"  || echo "    js:  up to date"
-  [ "${css_updated}" -gt 0 ] && echo "    css: ${css_updated} file(s) updated" || echo "    css: up to date"
+  echo "    js/css/html: copied"
 
   # Content — sync each project incrementally
   echo "    Syncing content from ${CONTENT_DIR}..."
@@ -112,6 +118,12 @@ build() {
     mkdir -p "${dest}"
 
     changed=0
+
+    # Skip entire project if source dir hasn't changed since last sync
+    if [ -d "${dest}" ] && [ ! "${proj_dir}" -nt "${dest}" ]; then
+      echo "    ${proj_name}: up to date"
+      continue
+    fi
 
     # post.md — copy if newer
     if [ -f "${proj_dir}/post.md" ]; then
