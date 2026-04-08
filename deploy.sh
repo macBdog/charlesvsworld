@@ -21,7 +21,6 @@ DOMAIN="henden.com.au"
 GCP_BUCKET="gs://${DOMAIN}"
 BUILD_DIR="${SCRIPT_DIR}/_build"
 CONTENT_DIR="${CONTENT_DIR:-${SCRIPT_DIR}/content}"
-WEBAPPS_DIR="${SCRIPT_DIR}/webapps"
 
 # GitHub repos to sync as hosted webapps on henden.com.au/<repo-name>/
 WEBAPP_REPOS=(
@@ -128,17 +127,6 @@ build() {
 
   echo "    Content sync: ${total_new} file(s) updated"
 
-  # Webapps — sync incrementally
-  if [ -d "${WEBAPPS_DIR}" ] && [ -n "$(ls -A "${WEBAPPS_DIR}" 2>/dev/null)" ]; then
-    echo "    Syncing webapps..."
-    for app_dir in "${WEBAPPS_DIR}"/*/; do
-      app_name="$(basename "${app_dir}")"
-      mkdir -p "${BUILD_DIR}/${app_name}"
-      cp -ru "${app_dir}/." "${BUILD_DIR}/${app_name}/"
-      echo "    ${app_name}: synced"
-    done
-  fi
-
   total_files=$(find "${BUILD_DIR}" -type f | wc -l)
   build_size=$(du -sh "${BUILD_DIR}" | cut -f1)
   echo "==> Build complete: ${total_files} files, ${build_size} — ${BUILD_DIR}"
@@ -146,16 +134,18 @@ build() {
 
 sync_webapps() {
   echo "==> Syncing webapps from GitHub"
-  mkdir -p "${WEBAPPS_DIR}"
+  mkdir -p "${BUILD_DIR}"
 
   for repo in "${WEBAPP_REPOS[@]}"; do
     local repo_url="https://github.com/${GITHUB_USER}/${repo}.git"
-    local dest="${WEBAPPS_DIR}/${repo}"
+    local dest="${BUILD_DIR}/${repo}"
 
     if [ -d "${dest}/.git" ]; then
       echo "    Updating ${repo}"
       git -C "${dest}" pull --ff-only
     else
+      # No .git means either first run or .git was stripped after last deploy — re-clone
+      rm -rf "${dest}"
       echo "    Cloning ${repo}"
       git clone --depth 1 "${repo_url}" "${dest}"
     fi
