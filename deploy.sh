@@ -187,6 +187,13 @@ sync_webapps() {
 
     # Remove git metadata — we only want the static files
     rm -rf "${dest}/.git"
+
+    # Ensure there is an index.html — use <repo>.html as fallback entry point
+    if [ ! -f "${dest}/index.html" ] && [ -f "${dest}/${repo}.html" ]; then
+      cp "${dest}/${repo}.html" "${dest}/index.html"
+      echo "    ${repo}: created index.html from ${repo}.html"
+    fi
+
     echo "    ${repo} ready at ${DOMAIN}/${repo}/"
   done
 
