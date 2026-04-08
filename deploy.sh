@@ -238,8 +238,7 @@ upload() {
   echo "==> Invalidating CDN cache"
   gcloud compute url-maps invalidate-cdn-cache "${DOMAIN//./-}-urlmap" \
     --path "/*" \
-    --global \
-    --async 2>/dev/null || echo "    (CDN invalidation skipped — not configured)"
+    --async || echo "    (CDN invalidation skipped — not configured)"
 
   echo "==> Upload complete: https://${DOMAIN}"
 }
